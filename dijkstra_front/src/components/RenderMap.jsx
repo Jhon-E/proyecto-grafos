@@ -14,8 +14,6 @@ export const RenderMap = () => {
     return <Loader />;
   }
 
-  console.log("son iguales? :",c.lat===start.lat);
-
   return (
     <MapContainer
       center={{ lat: c.lat, lng: c.lng }}

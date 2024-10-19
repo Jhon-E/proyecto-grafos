@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import { createContext, useEffect, useState } from "react";
 
 const CoordsContext = createContext();

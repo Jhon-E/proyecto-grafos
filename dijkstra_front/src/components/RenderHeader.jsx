@@ -1,6 +1,6 @@
 const RenderHeader = () => {
   return (
-    <header className="w-full text-3xl font-bold sticky top-0 left-0 text-primary">
+    <header className="w-full text-3xl font-bold sticky top-0 left-0 text-primary mb-2 z-30">
       <nav className="navbar bg-slate-900 bg-opacity-35 backdrop-filter backdrop-blur-lg">
         <div className="navbar-start">
           <div className="dropdown">
