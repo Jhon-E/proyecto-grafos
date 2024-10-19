@@ -1,4 +1,4 @@
-import Graph from "./Graph";
+import Graph from "../Graph";
 import RenderOptions from "./RenderOptions";
 import { useEffect, useState } from "react";
 

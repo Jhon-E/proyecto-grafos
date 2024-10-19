@@ -1,7 +1,7 @@
-import RenderHeader from "./components/renderHeader";
-import { RenderMap } from "./components/RenderMap";
-import { RenderEjemplos } from "./components/RenderEjemplos";
-import RenderGraph from "./components/RenderGraph";
+import RenderHeader from "./components/Renders/RenderHeader";
+import { RenderMap } from "./components/Renders/RenderMap";
+import { RenderEjemplos } from "./components/Renders/RenderEjemplos";
+import RenderGraph from "./components/Renders/RenderGraph";
 import { useContext } from "react";
 import { CoordsContext } from "./context/CoordProvider";
 
@@ -36,25 +36,28 @@ function App() {
           className="w-full md:h-[650px] sm:h-auto sm:justify-center mockup-window border-base-300 border bg-base-200"
         >
           <article className="flex flex-col p-6 md:flex-row md:w-full">
-            <h2 className=" text-4xl text-primary">¿Cómo Funciona?</h2>
-            <p>
+            <div>
+              <h2 className=" text-4xl text-primary">¿Cómo Funciona?</h2>
               <br />
-              El algoritmo de Dijkstra básicamente inicia en el nodo que escojas
-              <span className=" text-red-400"> el nodo de origen</span> y
-              analiza el grafo para encontrar el camino más corto entre ese nodo
-              y todos los otros nodos en el grafo. El algoritmo mantiene un
-              registro de la distancia conocida más corta desde el nodo de
-              origen hasta cada nodo y actualiza el valor si encuentra un camino
-              más corto.
-              <br />
-              <br />
-              Una vez que el algoritmo ha encontrado el camino más corto entre
-              el nodo de origen y otro nodo, ese nodo se marca como "visitado" y
-              se agrega al camino.
-              <br />
-              El proceso continúa hasta que todos los nodos en el grafo han sido
-              añadidos al camino.
-            </p>
+              <p>
+                El algoritmo de Dijkstra básicamente inicia en el nodo que
+                escojas
+                <span className=" text-red-400"> el nodo de origen</span> y
+                analiza el grafo para encontrar el camino más corto entre ese
+                nodo y todos los otros nodos en el grafo. El algoritmo mantiene
+                un registro de la distancia conocida más corta desde el nodo de
+                origen hasta cada nodo y actualiza el valor si encuentra un
+                camino más corto.
+                <br />
+                <br />
+                Una vez que el algoritmo ha encontrado el camino más corto entre
+                el nodo de origen y otro nodo, ese nodo se marca como "visitado"
+                y se agrega al camino.
+                <br />
+                El proceso continúa hasta que todos los nodos en el grafo han
+                sido añadidos al camino.
+              </p>
+            </div>
             <img
               className=" rounded-lg md:h-[300px] sm:h-300 m-10 sm:object-cover"
               src="https://png.pngtree.com/png-vector/20190726/ourlarge/pngtree-nodes-icon-for-your-project-png-image_1600097.jpg"

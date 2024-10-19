@@ -1,10 +1,10 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
-import { LocationMarker } from "./LocationMarker";
-import { CoordsContext } from "../context/CoordProvider";
+import { LocationMarker } from "../LocationMarker";
+import { CoordsContext } from "../../context/CoordProvider";
 import { useContext, useState } from "react";
-import { Clickable } from "./Clickable";
-import { Loader } from "./Loader";
+import { Clickable } from "../Clickable";
+import { Loader } from "../Loader";
 
 export const RenderMap = () => {
   const { c, start, end } = useContext(CoordsContext);
