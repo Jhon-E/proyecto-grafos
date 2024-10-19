@@ -1,7 +1,28 @@
 import RenderHeader from "./components/renderHeader";
 import { RenderMap } from "./components/RenderMap";
 import { RenderEjemplos } from "./components/RenderEjemplos";
+import { useContext } from "react";
+import { CoordsContext } from "./context/CoordProvider";
+
 function App() {
+
+  const { c, start, end } = useContext(CoordsContext);
+
+  function sendLocation() {
+    fetch(`http://127.0.0.1:5000/DistanciaCal?lat_origen=${start.lat}&lon_origen=${end.lng}&lat_destino=${end.lat}&lon_destino=${end.lng}`)
+      .then(response => response.text()) // Obtener la respuesta como texto (HTML)
+      .then(data => {
+        // Crear un contenedor o usar un div existente para renderizar el mapa
+        const container = document.getElementById("mapContainer");
+        if (container) {
+          container.innerHTML = data; // Renderiza el HTML devuelto
+        } else {
+          console.error("No se encontró el contenedor para renderizar el mapa.");
+        }
+      })
+      .catch(error => console.error("Error al obtener la ruta:", error));
+  }
+
   return (
     <>
       <RenderHeader />
@@ -57,6 +78,7 @@ function App() {
         <button
           id="calcular"
           className="btn btn-active text-base-100 bg-primary w-max border-base-100"
+          onClick={sendLocation}
         >
           Calcular Camino Más Corto
         </button>

@@ -22,3 +22,4 @@ dijkstra_front/*.ntvs*
 dijkstra_front/*.njsproj
 dijkstra_front/*.sln
 dijkstra_front/*.sw?
+node_modules

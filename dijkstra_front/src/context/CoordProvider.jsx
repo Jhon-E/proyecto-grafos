@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import { createContext, useEffect, useState } from "react";
 
 const CoordsContext = createContext();
@@ -8,7 +9,7 @@ export const CoordsProvider = ({ children }) => {
   );
 
   const [start, setStart] = useState({});
-  const [end, setEnd] = useState({});
+  const [end, setEnd] = useState({}); 
 
   useEffect(() => {
     if ("geolocation" in navigator) {
