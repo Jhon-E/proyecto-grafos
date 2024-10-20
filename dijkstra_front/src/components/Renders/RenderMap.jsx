@@ -1,5 +1,5 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { LocationMarker } from "../LocationMarker";
 import { CoordsContext } from "../../context/CoordProvider";
 import { useContext, useState } from "react";
@@ -23,7 +23,6 @@ export const RenderMap = () => {
         height: "100%",
         width: "100%",
         border: "2px solid #333",
-        borderRadius: "10px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >

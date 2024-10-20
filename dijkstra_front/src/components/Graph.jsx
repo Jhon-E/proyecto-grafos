@@ -1,30 +1,21 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
-import { dijkstra } from "../utils/dijkstra";
 
 const Graph = ({ nodes, links }) => {
   const ref = useRef();
 
-  // Función para inicializar el SVG
-  const createSVG = () => {
-    return d3
-      .select(ref.current)
-      .attr("width", 800)
-      .attr("height", 600)
-      .style("background-color", "#272c30");
-  };
-
   useEffect(() => {
+    console.log({ nodes, links });
     const svg = d3
       .select(ref.current)
       .attr("width", 800)
       .attr("height", 600)
       .style("background-color", "#272c30");
 
-    /* LIMPIO EL SVG ANTES DE AGREGAR LOS NODOS */
+    // Limpiar elementos existentes
+    svg.selectAll("*").remove();
 
-    svg.selectAll('*').remove()
-
+    // Crear simulación
     const simulation = d3
       .forceSimulation(nodes)
       .force(
@@ -33,49 +24,59 @@ const Graph = ({ nodes, links }) => {
           .forceLink(links)
           .id((d) => d.id)
           .distance(200)
-      ) // Aumentar la distancia entre nodos
-      .force("charge", d3.forceManyBody().strength(-50)) // Aumentar la fuerza de repulsión
+      )
+      .force("charge", d3.forceManyBody().strength(-50))
       .force("center", d3.forceCenter(400, 300));
 
+    // Unir y actualizar enlaces
     const link = svg
       .append("g")
       .selectAll("line")
-      .data(links, (d) => `${d.source.id}-${d.target.id}`)
-      .join("line")
+      .data(links)
+      .enter()
+      .append("line")
+      .attr("class", "link")
       .attr("stroke", "#999")
       .attr("stroke-width", 5);
 
+    // Unir y actualizar textos de enlaces
     const linkText = svg
       .append("g")
       .selectAll("text")
-      .data(links, (d) => `${d.source.id}-${d.target.id}`)
-      .join("text")
-      .attr("fill", "white")
+      .data(links)
+      .enter()
+      .append("text")
+      .attr("class", "linkText")
+      .attr("fill", "red")
       .attr("font-size", "20px")
       .text((d) => d.weight);
 
+    // Unir y actualizar nodos
+    const node = svg
+      .append("g")
+      .selectAll("circle")
+      .data(nodes)
+      .enter()
+      .append("circle")
+      .attr("class", "node")
+      .attr("r", 15)
+      .attr("fill", "#69b3a2");
+
+    // Unir y actualizar textos de nodos
     const nodeText = svg
       .append("g")
       .selectAll("text")
-      .data(nodes, (d) => d.id)
+      .data(nodes)
       .enter()
       .append("text")
-      .attr("fill", "black")
+      .attr("class", "nodeText")
+      .attr("fill", "#5ebbff")
       .attr("font-size", "20px")
       .attr("text-anchor", "middle")
       .attr("dy", ".35em")
       .text((d) => d.name);
 
-    const node = svg
-      .append("g")
-      .selectAll("circle")
-      .data(nodes, (d) => d.id)
-      .enter()
-      .append("circle")
-      .attr("r", 15)
-      .attr("fill", "#69b3a2");
-      
-    /* Esto actualiza las posiciones en cada tick (1 tick es una unidad de medida equivalente a 1 frame) */
+    // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
       link
         .attr("x1", (d) => d.source.x)
@@ -84,23 +85,16 @@ const Graph = ({ nodes, links }) => {
         .attr("y2", (d) => d.target.y);
 
       linkText
-        .attr("x", (d) => (d.source.x + d.target.x) / 2.05)
-        .attr("y", (d) => (d.source.y + d.target.y) / 2.05);
+        .attr("x", (d) => (d.source.x + d.target.x) / 2)
+        .attr("y", (d) => (d.source.y + d.target.y) / 2);
 
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
       nodeText.attr("x", (d) => d.x).attr("y", (d) => d.y + 30);
     });
 
-    // Aplicar Dijkstra y resaltar el camino más corto
-    /* const { distances, previous } = dijkstra(nodes, links, 1);
-    let targetNode = 2; // Nodo de destino
-    while (previous[targetNode]) {
-      svg.select(`#node-${targetNode}`).attr("fill", "red");
-      targetNode = previous[targetNode];
-    } */
-
     return () => {
+      // Detener simulación y limpiar SVG al desmontar el componente
       simulation.stop();
       svg.selectAll("*").remove();
     };
@@ -110,3 +104,11 @@ const Graph = ({ nodes, links }) => {
 };
 
 export default Graph;
+
+// Aplicar Dijkstra y resaltar el camino más corto
+/* const { distances, previous } = dijkstra(nodes, links, 1);
+let targetNode = 2; // Nodo de destino
+while (previous[targetNode]) {
+  svg.select(`#node-${targetNode}`).attr("fill", "red");
+  targetNode = previous[targetNode];
+} */

@@ -1,6 +1,6 @@
 import Graph from "../Graph";
 import RenderOptions from "./RenderOptions";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const RenderGraph = () => {
   const [cant, setCant] = useState(0);
@@ -32,7 +32,10 @@ const RenderGraph = () => {
         <select
           name="nodos"
           className="select select-bordered w-full max-w-xs"
-          onChange={(e) => setCant(e.target.value)}
+          onChange={(e) => {
+            setCant(e.target.value);
+            setEnlaces([]);
+          }}
         >
           <option disabled>1</option>
           <option>2</option>

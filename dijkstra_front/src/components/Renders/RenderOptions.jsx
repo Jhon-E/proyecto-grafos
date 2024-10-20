@@ -8,17 +8,21 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
 
     setEnlaces((prevEnlaces) => {
       // Verificar si el enlace ya existe
+
       const enlaceExistente = prevEnlaces.some(
         (enlace) =>
-          (enlace.source === id_nodo && enlace.target === objetivo) ||
-          (enlace.source === objetivo && enlace.target === id_nodo)
+          (enlace.source.id === id_nodo && enlace.target.id === objetivo) ||
+          (enlace.source.id === objetivo && enlace.target.id === id_nodo)
       );
+
+      console.log({enlaceExistente});
+      
 
       // Si el enlace no existe, agregarlo
       if (!enlaceExistente) {
         return [...prevEnlaces, nuevoEnlace];
       }
-      console.log(enlaces);
+      console.log(peso);
 
       // Si el enlace ya existe, devolver el estado anterior sin cambios
       return prevEnlaces;
@@ -32,9 +36,9 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
       {nodos
         .filter((ns) => ns.id != n.id)
         .map((elem) => (
-          <span className="w-[30px] flex flex-col" key={elem.id}>
+          <span className="w-[30px] flex flex-col gap-2" key={elem.id}>
             <p
-              className=" cursor-pointer hover:bg-accent hover:text-base-100 transition-all px-2 rounded-md"
+              className="bg-green-200 rounded-full cursor-pointer hover:bg-accent text-base-100 hover:rounded-full transition-all text-center m-1"
               onClick={() =>
                 peso != 0 ? agregarEnlace(n.id, elem.id, peso) : null
               }

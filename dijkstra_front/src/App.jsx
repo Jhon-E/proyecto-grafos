@@ -70,7 +70,7 @@ function App() {
             llegar a cada uno de ellos.
           </span>
         </section>
-        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6">
+        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6 ">
           <RenderEjemplos />
         </section>
       </main>
@@ -79,7 +79,7 @@ function App() {
         className="text-secondary bg-slate-900 h-dvh py-14 px-4 md:px-60 flex flex-col justify-center items-center left-0 w-full -z-10"
       >
         <h2 className=" text-4xl self-start font-bold">Selecciona 2 puntos</h2>
-        <div id="mapa" className="w-full h-[600px] m-10 ">
+        <div id="mapa" className="w-full h-[600px] m-10  mockup-window border-base-300 border bg-base-200">
           <RenderMap />
         </div>
         <button
