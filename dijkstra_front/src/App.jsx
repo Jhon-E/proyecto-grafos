@@ -37,7 +37,9 @@ function App() {
         >
           <article className="flex flex-col p-6 md:flex-row md:w-full">
             <div>
-              <h2 className=" text-4xl text-primary">¿Cómo Funciona?</h2>
+              <h2 className=" text-4xl text-primary">
+                ¿Cómo Funciona el algoritmo dijkstra?
+              </h2>
               <br />
               <p>
                 El algoritmo de Dijkstra básicamente inicia en el nodo que
@@ -73,26 +75,31 @@ function App() {
         <section id="ejemplos" className="w-full h-auto relative -z-30 p-6 ">
           <RenderEjemplos />
         </section>
-      </main>
-      <section
-        id="calculadora"
-        className="text-secondary bg-slate-900 h-dvh py-14 px-4 md:px-60 flex flex-col justify-center items-center left-0 w-full -z-10"
-      >
-        <h2 className=" text-4xl self-start font-bold">Selecciona 2 puntos</h2>
-        <div id="mapa" className="w-full h-[600px] m-10  mockup-window border-base-300 border bg-base-200">
-          <RenderMap />
-        </div>
-        <button
-          id="calcular"
-          className="btn btn-active text-base-100 bg-primary w-max border-base-100"
-          onClick={sendLocation}
+        <section
+          id="calculadora"
+          className="text-secondary h-dvh py-8 flex flex-col justify-center items-center left-0 w-full -z-10"
         >
-          Calcular Camino Más Corto
-        </button>
-      </section>
-      <section className="w-full h-full flex justify-evenly">
-        <RenderGraph />
-      </section>
+          <h2 className=" text-4xl self-start font-bold">
+            Selecciona 2 puntos
+          </h2>
+          <div
+            id="mapa"
+            className="w-full h-full m-10  mockup-window border-base-300 border bg-base-200"
+          >
+            <RenderMap />
+          </div>
+          <button
+            id="calcular"
+            className="btn btn-active text-base-100 bg-primary w-max border-base-100"
+            onClick={sendLocation}
+          >
+            Calcular Camino Más Corto
+          </button>
+        </section>
+        <section className="w-full h-dvh py-16 flex justify-evenly" id="creador"> 
+          <RenderGraph />
+        </section>
+      </main>
       <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
         <aside>
           <p>

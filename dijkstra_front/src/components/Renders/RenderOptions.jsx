@@ -15,8 +15,7 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
           (enlace.source.id === objetivo && enlace.target.id === id_nodo)
       );
 
-      console.log({enlaceExistente});
-      
+      console.log({ enlaceExistente });
 
       // Si el enlace no existe, agregarlo
       if (!enlaceExistente) {

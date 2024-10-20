@@ -28,6 +28,7 @@ const RenderGraph = () => {
         action=""
         className="p-6 w-1/2 items-center self-center flex flex-col gap-6"
       >
+        <h1 className=" text-4xl text-primary font-bold">Generador de grafos</h1>
         <label htmlFor="nodos">Elija una cantidad de nodos</label>
         <select
           name="nodos"
