@@ -96,7 +96,7 @@ function App() {
             Calcular Camino Más Corto
           </button>
         </section>
-        <section className="w-full h-dvh py-16 flex justify-evenly" id="creador"> 
+        <section className="md:w-full md:py-16 md:flex md:flex-row sm:flex-col md:justify-evenly" id="creador"> 
           <RenderGraph />
         </section>
       </main>

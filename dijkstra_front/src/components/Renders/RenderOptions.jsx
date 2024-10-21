@@ -30,7 +30,7 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
 
   return nodos.map((n) => (
     <div key={n.id} className="flex gap-6">
-      <b className=" text-primary">{n.name}</b>
+      <b className=" text-primary w-max">{n.name}</b>
       <span>➡️</span>
       {nodos
         .filter((ns) => ns.id != n.id)

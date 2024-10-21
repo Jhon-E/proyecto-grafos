@@ -5,12 +5,13 @@ const Graph = ({ nodes, links }) => {
   const ref = useRef();
 
   useEffect(() => {
-    console.log({ nodes, links });
     const svg = d3
       .select(ref.current)
-      .attr("width", 800)
-      .attr("height", 600)
-      .style("background-color", "#272c30");
+      .attr("viewBox", "0 0 800 600")
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .style("background-color", "#272c30")
+      .style("width", "100%")
+      .style("height", "100%");
 
     // Limpiar elementos existentes
     svg.selectAll("*").remove();
