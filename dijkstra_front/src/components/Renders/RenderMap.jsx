@@ -11,7 +11,7 @@ export const RenderMap = () => {
 
   // Manejar el caso en que c sea null o undefined
   if (!c || !c.lat || !c.lng) {
-    return <Loader />;
+    return <Loader title ="Cargando tu ubicación"/>;
   }
 
   return (

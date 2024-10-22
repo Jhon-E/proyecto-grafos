@@ -23,10 +23,11 @@ const RenderGraph = () => {
 
   return (
     <>
-      <form className="p-6 w-full items-center self-center flex flex-col gap-6 text-sm">
-        <h1 className="text-4xl text-primary font-bold">
-          Generador de grafos
-        </h1>
+      <Graph nodes={nodos} links={enlaces} />
+      <form
+        action=""
+        className="p-6 w-1/2 items-center self-center flex flex-col gap-6"
+      >
         <label htmlFor="nodos">Elija una cantidad de nodos</label>
         <select
           name="nodos"
@@ -56,7 +57,6 @@ const RenderGraph = () => {
           />
         ) : null}
       </form>
-      <Graph nodes={nodos} links={enlaces} />
     </>
   );
 };
