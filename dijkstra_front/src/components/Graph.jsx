@@ -5,16 +5,19 @@ const Graph = ({ nodes, links }) => {
   const ref = useRef();
 
   useEffect(() => {
+    console.log({ nodes, links });
     const svg = d3
       .select(ref.current)
-      .attr("viewBox", "0 0 800 600")
-      .attr("preserveAspectRatio", "xMidYMid meet")
-      .style("background-color", "#272c30")
-      .style("width", "100%")
-      .style("height", "100%");
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .style("background-color", "#272c30");
 
     // Limpiar elementos existentes
     svg.selectAll("*").remove();
+
+    // Obtener dimensiones iniciales del SVG
+    let width = ref.current.clientWidth;
+    let height = ref.current.clientHeight;
 
     // Crear simulación
     const simulation = d3
@@ -27,7 +30,7 @@ const Graph = ({ nodes, links }) => {
           .distance(200)
       )
       .force("charge", d3.forceManyBody().strength(-50))
-      .force("center", d3.forceCenter(400, 300));
+      .force("center", d3.forceCenter(width / 2, height / 2));
 
     // Unir y actualizar enlaces
     const link = svg

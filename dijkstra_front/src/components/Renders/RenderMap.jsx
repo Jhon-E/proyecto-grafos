@@ -11,7 +11,7 @@ export const RenderMap = () => {
 
   // Manejar el caso en que c sea null o undefined
   if (!c || !c.lat || !c.lng) {
-    return <Loader />;
+    return <Loader title ="Cargando tu ubicación"/>;
   }
 
   return (
@@ -30,7 +30,6 @@ export const RenderMap = () => {
         attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker coords={c} />
       {start.lat !== undefined && start.lng !== undefined ? (
         <LocationMarker coords={start} />
       ) : null}

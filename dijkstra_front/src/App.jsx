@@ -2,29 +2,39 @@ import RenderHeader from "./components/Renders/RenderHeader";
 import { RenderMap } from "./components/Renders/RenderMap";
 import { RenderEjemplos } from "./components/Renders/RenderEjemplos";
 import RenderGraph from "./components/Renders/RenderGraph";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CoordsContext } from "./context/CoordProvider";
+import { Loader } from "./components/Loader";
 
 function App() {
   const { c, start, end } = useContext(CoordsContext);
+  const [loading, setLoading] = useState(false);
 
   function sendLocation() {
-    fetch(
-      `http://127.0.0.1:5000/DistanciaCal?lat_origen=${start.lat}&lon_origen=${end.lng}&lat_destino=${end.lat}&lon_destino=${end.lng}`
-    )
-      .then((response) => response.text()) // Obtener la respuesta como texto (HTML)
-      .then((data) => {
-        // Crear un contenedor o usar un div existente para renderizar el mapa
-        const container = document.getElementById("mapContainer");
-        if (container) {
-          container.innerHTML = data; // Renderiza el HTML devuelto
-        } else {
-          console.error(
-            "No se encontró el contenedor para renderizar el mapa."
-          );
-        }
-      })
-      .catch((error) => console.error("Error al obtener la ruta:", error));
+    if (start.lat && start.lng && end.lat && end.lng) {
+      setLoading(true);
+      fetch(
+        `http://127.0.0.1:5000/DistanciaCal?lat_origen=${start.lat}&lon_origen=${start.lng}&lat_destino=${end.lat}&lon_destino=${end.lng}`
+      )
+        .then((response) => response.text()) // Obtener la respuesta como texto (HTML)
+        .then((data) => {
+          const newWindow = window.open();
+          console.log("Respuesta: " + data);
+
+          console.log("Ventana: " + newWindow);
+
+          if (newWindow) {
+            newWindow.document.write(data);
+            newWindow.document.close();
+            setLoading(false);
+          } else {
+            alert(
+              "No se abrió la pestaña, habilité los permisos para ventana emergentes."
+            );
+          }
+        })
+        .catch((error) => console.error("Error al obtener la ruta:", error));
+    }
   }
 
   return (
@@ -37,9 +47,7 @@ function App() {
         >
           <article className="flex flex-col p-6 md:flex-row md:w-full">
             <div>
-              <h2 className=" text-4xl text-primary">
-                ¿Cómo Funciona el algoritmo dijkstra?
-              </h2>
+              <h2 className=" text-4xl text-primary">¿Cómo Funciona?</h2>
               <br />
               <p>
                 El algoritmo de Dijkstra básicamente inicia en el nodo que
@@ -75,36 +83,42 @@ function App() {
         <section id="ejemplos" className="w-full h-auto relative -z-30 p-6 ">
           <RenderEjemplos />
         </section>
-        <section
-          id="calculadora"
-          className="text-secondary h-dvh py-8 flex flex-col justify-center items-center left-0 w-full -z-10"
-        >
-          <h2 className=" text-4xl self-start font-bold">
-            Selecciona 2 puntos
-          </h2>
-          <div
-            id="mapa"
-            className="w-full h-full m-10  mockup-window border-base-300 border bg-base-200"
-          >
-            <RenderMap />
-          </div>
-          <button
-            id="calcular"
-            className="btn btn-active text-base-100 bg-primary w-max border-base-100"
-            onClick={sendLocation}
-          >
-            Calcular Camino Más Corto
-          </button>
-        </section>
-        <section className="md:w-full md:py-16 md:flex md:flex-row sm:flex-col md:justify-evenly" id="creador"> 
-          <RenderGraph />
-        </section>
       </main>
+      <section
+        id="calculadora"
+        className="text-secondary h-dvh py-8 px-4 md:px-60 flex flex-col justify-center items-center w-full -z-10"
+      >
+        <h2 className=" text-4xl self-start font-bold">Selecciona 2 puntos</h2>
+        <div
+          id="mapa"
+          className="w-full h-[600px] m-10  mockup-window border-base-300 border bg-base-200"
+        >
+          {loading ? (
+            <Loader text="Calculando la ruta más eficiente" />
+          ) : (
+            <RenderMap />
+          )}
+        </div>
+        <button
+          id="calcular"
+          className="btn btn-active hover:bg-base-100 hover:text-white disabled:bg-base-100 disabled:text-white transition-all text-base-100 bg-primary w-max border-base-100"
+          onClick={sendLocation}
+          disabled={loading}
+        >
+          {loading ? "Cargando tu mapa" : "Calcular Camino Más Corto"}
+        </button>
+      </section>
+      <section
+        id="creador"
+        className=" flex-col flex justify-between md:flex-row md:h-dvh"
+      >
+        <RenderGraph />
+      </section>
       <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
         <aside>
           <p>
             Copyright © {new Date().getFullYear()} - Todos los derechos
-            reservados para Jhone
+            reservados para Jhone, Cacua y Daniel.
           </p>
         </aside>
       </footer>

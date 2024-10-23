@@ -1,7 +1,7 @@
 const RenderHeader = () => {
   return (
-    <header className="w-[50px] text-3xl font-bold sticky top-5 left-5 text-primary z-30">
-      <nav className=" bg-slate-900 rounded-full bg-opacity-35 backdrop-filter backdrop-blur-lg">
+    <header className="w-min font-bold sticky top-5 left-5 text-primary z-30">
+      <nav className="rounded-full bg-slate-900 bg-opacity-35 backdrop-filter backdrop-blur-lg">
         <div className="navbar-start">
           <div className="dropdown">
             <div
@@ -26,7 +26,7 @@ const RenderHeader = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-md dropdown-content bg-primary text-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-md dropdown-content bg-primary text-base-100 rounded-box z-[1] mt-3 w-52 shadow"
             >
               <li>
                 <a href="#como-funciona">¿Cómo funciona?</a>
@@ -38,7 +38,7 @@ const RenderHeader = () => {
                 <a href="#calculadora">Calculadora distancia más corta</a>
               </li>
               <li>
-                <a href="#creador">generador de grafos</a>
+                <a href="#creador">Creador de grafos</a>
               </li>
             </ul>
           </div>

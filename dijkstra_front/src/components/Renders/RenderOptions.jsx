@@ -15,7 +15,8 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
           (enlace.source.id === objetivo && enlace.target.id === id_nodo)
       );
 
-      console.log({ enlaceExistente });
+      console.log({enlaceExistente});
+      
 
       // Si el enlace no existe, agregarlo
       if (!enlaceExistente) {
@@ -30,7 +31,7 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
 
   return nodos.map((n) => (
     <div key={n.id} className="flex gap-6">
-      <b className=" text-primary w-max">{n.name}</b>
+      <b className=" text-primary">{n.name}</b>
       <span>➡️</span>
       {nodos
         .filter((ns) => ns.id != n.id)
