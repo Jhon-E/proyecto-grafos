@@ -80,7 +80,7 @@ function App() {
             llegar a cada uno de ellos.
           </span>
         </section>
-        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6 ">
+        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6">
           <RenderEjemplos />
         </section>
       </main>

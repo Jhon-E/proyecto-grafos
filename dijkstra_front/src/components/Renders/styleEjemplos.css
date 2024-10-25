@@ -1,21 +1,47 @@
-.item {
+.item:nth-child(odd) {
     view-timeline-name: --image;
     view-timeline-axis: block;
 
     animation-timeline: --image;
-    animation-name: show;
+    animation-name: show-left;
 
     animation-range: entry 25% cover 50%;
     animation-fill-mode: both;
 }
 
-@keyframes show {
+@keyframes show-left {
     from {
         opacity: 0;
         scale: 25%;
+        transform: translateX(-1000px);
     }
     to {
         opacity: 1;
         scale: 100%;
+        transform: translateX(0px);
+    }
+}
+
+.item:nth-child(even) {
+    view-timeline-name: --image;
+    view-timeline-axis: block;
+
+    animation-timeline: --image;
+    animation-name: show-right;
+
+    animation-range: entry 25% cover 50%;
+    animation-fill-mode: both;
+}
+
+@keyframes show-right {
+    from {
+        opacity: 0;
+        scale: 25%;
+        transform: translateX(1000px);
+    }
+    to {
+        opacity: 1;
+        scale: 100%;
+        transform: translateX(0px);
     }
 }
