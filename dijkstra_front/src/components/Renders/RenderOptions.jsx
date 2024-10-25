@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
+  const [target, setTarget] = useState(null);
+
   const agregarEnlace = (id_nodo, objetivo, peso) => {
     const nuevoEnlace = {
       source: id_nodo,
@@ -15,8 +19,7 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
           (enlace.source.id === objetivo && enlace.target.id === id_nodo)
       );
 
-      console.log({enlaceExistente});
-      
+      console.log({ enlaceExistente });
 
       // Si el enlace no existe, agregarlo
       if (!enlaceExistente) {
@@ -29,33 +32,45 @@ const RenderOptions = ({ nodos, setPeso, peso, enlaces, setEnlaces }) => {
     });
   };
 
-  return nodos.map((n) => (
-    <div key={n.id} className="flex gap-6">
+  return nodos.map((n, i) => (
+    <div key={n.id} className="flex gap-6 items-center">
       <b className=" text-primary">{n.name}</b>
-      <span>➡️</span>
-      {nodos
-        .filter((ns) => ns.id != n.id)
-        .map((elem) => (
-          <span className="w-[30px] flex flex-col gap-2" key={elem.id}>
-            <p
-              className="bg-green-200 rounded-full cursor-pointer hover:bg-accent text-base-100 hover:rounded-full transition-all text-center m-1"
-              onClick={() =>
-                peso != 0 ? agregarEnlace(n.id, elem.id, peso) : null
-              }
-            >
+      <div
+        className=" cursor-pointer text-base-100 font-bold bg-accent hover:bg-green-300 transition-all p-2 rounded-md hover"
+        key={n.name}
+        onClick={() => {
+          console.log(n.id, target, peso);
+
+          peso != 0 && target
+            ? agregarEnlace(parseInt(n.id), target, peso)
+            : null;
+        }}
+      >
+        Enlazar
+      </div>
+      <select
+        className=" flex flex-col gap-2 bg-green-200 text-base-100 font-bold rounded-lg"
+        key={i}
+        onChange={(e) => setTarget(parseInt(e.target.value))}
+      >
+        {nodos
+          .filter((ns) => ns.id != n.id)
+          .map((elem) => (
+            <option className="bg-green-200 rounded-full cursor-pointer hover:bg-accent text-base-100 hover:rounded-full transition-all text-center m-1">
               {elem.id}
-            </p>
-            <div className=" text-center relative">
-              <input
-                type="number"
-                name="peso"
-                id="peso"
-                className="bg-base-200 rounded-lg w-[50px] absolute -left-4 text-center"
-                onChange={(e) => setPeso(e.target.value)}
-              />
-            </div>
-          </span>
-        ))}
+            </option>
+          ))}
+      </select>
+      <div className=" text-center relative">
+        <label htmlFor="peso">Peso </label>
+        <input
+          type="number"
+          name="peso"
+          id="peso"
+          className="bg-base-200 rounded-lg w-[60px] text-center"
+          onChange={(e) => setPeso(e.target.value)}
+        />
+      </div>
     </div>
   ));
 };
