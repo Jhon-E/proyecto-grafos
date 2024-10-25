@@ -23,12 +23,12 @@ const RenderGraph = () => {
 
   return (
     <>
-      <Graph nodes={nodos} links={enlaces} />
       <form
         action=""
         className="p-6 w-1/2 items-center self-center flex flex-col gap-6"
       >
-        <label htmlFor="nodos">Elija una cantidad de nodos</label>
+        <h1 className="text-primary text-4xl font-bold">Generador de grafos</h1>
+        <label htmlFor="nodos">Ingrese una cantidad de nodos</label>
         <select
           name="nodos"
           className="select select-bordered w-full max-w-xs"
@@ -44,9 +44,7 @@ const RenderGraph = () => {
           <option>5</option>
           <option>6</option>
         </select>
-        {nodos.length > 1 ? (
-          <h3>Elija los enlaces (debe darle click al número para enlazar)</h3>
-        ) : null}
+        {nodos.length > 1 ? <h3>Enlazar los nodos</h3> : null}
         {nodos.length > 1 ? (
           <RenderOptions
             nodos={nodos}
@@ -57,6 +55,9 @@ const RenderGraph = () => {
           />
         ) : null}
       </form>
+      <div className="w-full h-dvh">
+        <Graph nodes={nodos} links={enlaces} />
+      </div>
     </>
   );
 };

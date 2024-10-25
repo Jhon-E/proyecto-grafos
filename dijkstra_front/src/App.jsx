@@ -4,6 +4,7 @@ import { RenderEjemplos } from "./components/Renders/RenderEjemplos";
 import RenderGraph from "./components/Renders/RenderGraph";
 import { useContext, useState } from "react";
 import { CoordsContext } from "./context/CoordProvider";
+import { Loader } from "./components/Loader";
 
 function App() {
   const { c, start, end } = useContext(CoordsContext);
@@ -11,34 +12,29 @@ function App() {
 
   function sendLocation() {
     if (start.lat && start.lng && end.lat && end.lng) {
-
       setLoading(true);
       fetch(
         `http://127.0.0.1:5000/DistanciaCal?lat_origen=${start.lat}&lon_origen=${start.lng}&lat_destino=${end.lat}&lon_destino=${end.lng}`
       )
         .then((response) => response.text()) // Obtener la respuesta como texto (HTML)
         .then((data) => {
-          const newWindow = window.open()
-          console.log("Respuesta: "+data);
+          const newWindow = window.open();
+          console.log("Respuesta: " + data);
 
-          console.log("Ventana: "+newWindow);
-          
-          
-  
+          console.log("Ventana: " + newWindow);
+
           if (newWindow) {
-            newWindow.document.write(data)
+            newWindow.document.write(data);
             newWindow.document.close();
-            setLoading(false)
+            setLoading(false);
           } else {
-            alert("No se abrió la pestaña, habilité los permisos para ventana emergentes.");
-
+            alert(
+              "No se abrió la pestaña, habilité los permisos para ventana emergentes."
+            );
           }
-
         })
         .catch((error) => console.error("Error al obtener la ruta:", error));
     }
-
-
   }
 
   return (
@@ -84,17 +80,24 @@ function App() {
             llegar a cada uno de ellos.
           </span>
         </section>
-        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6 ">
+        <section id="ejemplos" className="w-full h-auto relative -z-30 p-6">
           <RenderEjemplos />
         </section>
       </main>
       <section
         id="calculadora"
-        className="text-secondary bg-slate-900 h-dvh py-14 px-4 md:px-60 flex flex-col justify-center items-center left-0 w-full -z-10"
+        className="text-secondary h-dvh py-8 px-4 md:px-60 flex flex-col justify-center items-center w-full -z-10"
       >
         <h2 className=" text-4xl self-start font-bold">Selecciona 2 puntos</h2>
-        <div id="mapa" className="w-full h-[600px] m-10  mockup-window border-base-300 border bg-base-200">
-          <RenderMap />
+        <div
+          id="mapa"
+          className="w-full h-[600px] m-10  mockup-window border-base-300 border bg-base-200"
+        >
+          {loading ? (
+            <Loader text="Calculando la ruta más eficiente" />
+          ) : (
+            <RenderMap />
+          )}
         </div>
         <button
           id="calcular"
@@ -105,14 +108,17 @@ function App() {
           {loading ? "Cargando tu mapa" : "Calcular Camino Más Corto"}
         </button>
       </section>
-      <section className="w-full h-full flex justify-evenly">
+      <section
+        id="creador"
+        className=" flex-col flex justify-between md:flex-row md:h-dvh"
+      >
         <RenderGraph />
       </section>
       <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
         <aside>
           <p>
             Copyright © {new Date().getFullYear()} - Todos los derechos
-            reservados para Jhone
+            reservados para Jhone, Cacua y Daniel.
           </p>
         </aside>
       </footer>

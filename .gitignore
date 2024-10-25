@@ -34,6 +34,7 @@ dijkstra_front/.DS_Store
 
 # Windows files
 dijkstra_front/Thumbs.db
+.vercel
 
 # entorno
 
