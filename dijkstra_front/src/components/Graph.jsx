@@ -1,27 +1,44 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect, useReducer, useContext } from "react";
+import { DataContext } from "../context/DataProvider";
+import NodeReducer from "../Reducer/NodesReducer";
 import * as d3 from "d3";
 
 const Graph = ({ nodes, links }) => {
+  const [state, dispatch] = useReducer(NodeReducer, { nodes });
+  const { action } = useContext(DataContext);
+
   const ref = useRef();
 
   useEffect(() => {
-    console.log({ nodes, links });
+    console.log(action);
+  }, [action]);
+
+  useEffect(() => {
+    /*  console.log(state); */
+
     const svg = d3
       .select(ref.current)
       .attr("width", "100%")
       .attr("height", "100%")
-      .style("background-color", "#272c30");
+      .on("click", (e) => {
+        const [x, y] = d3.pointer(e);
+        const newNode = {
+          id: `${state.nodes.length + 1}`,
+          name: `Nodo ${state.nodes.length + 1}`,
+          x,
+          y,
+        };
+        action == "INSERT"
+          ? dispatch({ type: action, newNode })
+          : console.log("No es insert");
+      });
 
     // Limpiar elementos existentes
     svg.selectAll("*").remove();
 
-    // Obtener dimensiones iniciales del SVG
-    let width = ref.current.clientWidth;
-    let height = ref.current.clientHeight;
-
     // Crear simulación
     const simulation = d3
-      .forceSimulation(nodes)
+      .forceSimulation(state.nodes)
       .force(
         "link",
         d3
@@ -29,8 +46,7 @@ const Graph = ({ nodes, links }) => {
           .id((d) => d.id)
           .distance(100)
       )
-      .force("charge", d3.forceManyBody().strength(-25))
-      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("charge", d3.forceManyBody().strength(-5))
       .force("collision", d3.forceCollide().radius(30));
 
     // Unir y actualizar enlaces
@@ -56,39 +72,11 @@ const Graph = ({ nodes, links }) => {
       .attr("font-size", "20px")
       .text((d) => d.weight);
 
-    //Opciones para el drag
-
-    function dragstarted(event) {
-      console.log(event);
-
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
-    }
-
-    function dragged(event) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
-    }
-
-    function dragended(event) {
-      if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
-    }
-
-    const drag = d3
-      .drag()
-      .subject(({ x, y }) => simulation.find(x - width / 2, y - height / 2, 40))
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended);
-
     // Unir y actualizar nodos
     const node = svg
       .append("g")
       .selectAll("circle")
-      .data(nodes)
+      .data(state.nodes)
       .enter()
       .append("circle")
       .attr("class", "node")
@@ -97,17 +85,17 @@ const Graph = ({ nodes, links }) => {
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
-      .call(d3.drag() // Aplica el comportamiento de arrastre aquí
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended)
-      );
+      .on("click", (e, d) => {
+        action == "DELETE"
+          ? dispatch({ type: action, d })
+          : console.log("No es delete");
+      });
 
     // Unir y actualizar textos de nodos
     const nodeText = svg
       .append("g")
       .selectAll("text")
-      .data(nodes)
+      .data(state.nodes)
       .enter()
       .append("text")
       .attr("class", "nodeText")
@@ -119,11 +107,11 @@ const Graph = ({ nodes, links }) => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
-      .call(d3.drag() // Aplica el comportamiento de arrastre aquí
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended)
-      );;
+      .on("click", (e, d) => {
+        action == "DELETE"
+          ? dispatch({ type: action, d })
+          : console.log("No es delete");
+      });
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
@@ -147,7 +135,7 @@ const Graph = ({ nodes, links }) => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [nodes, links]);
+  }, [links, state.nodes, action]);
 
   return <svg ref={ref}></svg>;
 };

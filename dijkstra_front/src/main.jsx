@@ -1,11 +1,13 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
-import { CoordsProvider } from "./context/CoordProvider.jsx";
+import { DataProvider } from "./context/DataProvider.jsx";
+import { AlertProvider } from "./context/AlertProvider.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
-  <CoordsProvider>
-    <App />
-  </CoordsProvider>
+  <DataProvider>
+    <AlertProvider>
+      <App />
+    </AlertProvider>
+  </DataProvider>
 );
