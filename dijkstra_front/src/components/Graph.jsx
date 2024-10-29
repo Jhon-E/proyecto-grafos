@@ -1,20 +1,38 @@
-import { useRef, useEffect, useReducer, useContext } from "react";
+import { useRef, useEffect, useReducer, useContext, useState } from "react";
 import { DataContext } from "../context/DataProvider";
 import NodeReducer from "../Reducer/NodesReducer";
 import * as d3 from "d3";
 
 const Graph = ({ nodes, links }) => {
   const [state, dispatch] = useReducer(NodeReducer, { nodes });
-  const { action } = useContext(DataContext);
+  const { action, setEnlaces } = useContext(DataContext);
+  const [count, setCount] = useState(0);
+  const [firtsNode, setFirtsNode] = useState({});
 
   const ref = useRef();
 
-  useEffect(() => {
-    console.log(action);
-  }, [action]);
+  const linker = (first, second) => {
+    const newLink = {
+      source: first.id, // ID del nodo de origen
+      target: second.id, // ID del nodo de destino
+      weight: 0,
+    };
+
+    // Verificar si el enlace ya existe
+    const linkExists = links.some(
+      (l) =>
+        (l.source.id === newLink.source && l.target.id === newLink.target) ||
+        (l.source.id === newLink.target && l.target.id === newLink.source)
+    );
+
+    // Si el enlace no existe, agregarlo
+    if (!linkExists && first.id !== second.id) {
+      setEnlaces((prevLinks) => [...prevLinks, newLink]);
+    }
+  };
 
   useEffect(() => {
-    /*  console.log(state); */
+    console.log(links);
 
     const svg = d3
       .select(ref.current)
@@ -41,13 +59,11 @@ const Graph = ({ nodes, links }) => {
       .forceSimulation(state.nodes)
       .force(
         "link",
-        d3
-          .forceLink(links)
-          .id((d) => d.id)
-          .distance(100)
+        d3.forceLink(links).id((d) => d.id)
+        .distance(100)
       )
-      .force("charge", d3.forceManyBody().strength(-5))
-      .force("collision", d3.forceCollide().radius(30));
+      .force("charge", d3.forceManyBody().strength(0))
+      .force("collision", d3.forceCollide().radius(10));
 
     // Unir y actualizar enlaces
     const link = svg
@@ -86,9 +102,29 @@ const Graph = ({ nodes, links }) => {
       .attr("cursor", "grab")
       .style("user-select", "none")
       .on("click", (e, d) => {
-        action == "DELETE"
-          ? dispatch({ type: action, d })
-          : console.log("No es delete");
+        switch (action) {
+          case "DELETE":
+            dispatch({ type: action, d });
+            setEnlaces((en) =>
+              en.filter((l) => l.source.id !== d.id && l.target.id !== d.id)
+            );
+            break;
+          case "LINK":
+            console.log({ nodo: firtsNode.id, count });
+
+            if (count < 1 && firtsNode.id == undefined) {
+              console.log("Entro aca");
+
+              setFirtsNode(d);
+              setCount((c) => c + 1);
+            } else if (count < 2 && firtsNode.id) {
+              linker(firtsNode, d);
+              setCount((c) => c + 1);
+              setCount(0);
+              setFirtsNode({});
+            }
+            break;
+        }
       });
 
     // Unir y actualizar textos de nodos
@@ -108,9 +144,29 @@ const Graph = ({ nodes, links }) => {
       .style("user-select", "none")
       .text((d) => d.id)
       .on("click", (e, d) => {
-        action == "DELETE"
-          ? dispatch({ type: action, d })
-          : console.log("No es delete");
+        switch (action) {
+          case "DELETE":
+            dispatch({ type: action, d });
+            setEnlaces((en) =>
+              en.filter((l) => l.source.id !== d.id && l.target.id !== d.id)
+            );
+            break;
+          case "LINK":
+            console.log({ nodo: firtsNode.id, count });
+
+            if (count < 1 && firtsNode.id == undefined) {
+              console.log("Entro aca");
+
+              setFirtsNode(d);
+              setCount((c) => c + 1);
+            } else if (count < 2 && firtsNode.id) {
+              linker(firtsNode, d);
+              setCount((c) => c + 1);
+              setCount(0);
+              setFirtsNode({});
+            }
+            break;
+        }
       });
 
     // Actualizar posiciones en cada tick
@@ -135,7 +191,7 @@ const Graph = ({ nodes, links }) => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [links, state.nodes, action]);
+  }, [links, state.nodes, action, count]);
 
   return <svg ref={ref}></svg>;
 };

@@ -1,15 +1,15 @@
 import Graph from "../Graph";
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { DataContext } from "../../context/DataProvider";
 
 const RenderGraph = () => {
-  const [cant, setCant] = useState(0);
-  const [nodos, setNodos] = useState([]);
-  const [enlaces, setEnlaces] = useState([]);
   const [peso, setPeso] = useState(0);
+
+  const {enlaces, nodes} = useContext(DataContext)
 
   return (
     <div className="w-full h-dvh">
-      <Graph nodes={nodos} links={enlaces} />
+      <Graph nodes={nodes} links={enlaces} />
     </div>
   );
 };

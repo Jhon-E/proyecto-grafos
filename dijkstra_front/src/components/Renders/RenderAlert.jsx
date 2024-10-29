@@ -12,6 +12,9 @@ const RenderAlert = ({ action }) => {
       case "DELETE":
         setMsg("Seleccione el nodo a eliminar");
         break;
+      case "LINK":
+        setMsg("Seleccione los nodos a enlazar");
+        break;
     }
   }, [action]);
 
