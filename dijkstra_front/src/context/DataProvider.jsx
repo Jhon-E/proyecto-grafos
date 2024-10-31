@@ -7,6 +7,7 @@ export const DataProvider = ({ children }) => {
   const [enlaces, setEnlaces] = useState([]);
   const [peso, setPeso] = useState(0);
   const [action, setAction] = useState("");
+  const [showModalPeso, setShowModalPeso] = useState(false);
 
   return (
     <DataContext.Provider
@@ -15,10 +16,12 @@ export const DataProvider = ({ children }) => {
         enlaces,
         peso,
         action,
+        showModalPeso,
         setNodes,
         setEnlaces,
         setPeso,
         setAction,
+        setShowModalPeso,
       }}
     >
       {children}

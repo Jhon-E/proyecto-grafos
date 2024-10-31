@@ -18,9 +18,7 @@ function App() {
         </section>
         {showAlert ? (
           <RenderAlert action={action} />
-        ) : (
-          console.log({ showAlert })
-        )}
+        ) : null}
       </main>
       {/*  <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
         <aside>

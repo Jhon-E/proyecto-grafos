@@ -5,17 +5,18 @@ import * as d3 from "d3";
 
 const Graph = ({ nodes, links }) => {
   const [state, dispatch] = useReducer(NodeReducer, { nodes });
-  const { action, setEnlaces } = useContext(DataContext);
+  const { action, setEnlaces, showModalPeso, setShowModalPeso, peso } =
+    useContext(DataContext);
   const [count, setCount] = useState(0);
   const [firtsNode, setFirtsNode] = useState({});
 
   const ref = useRef();
 
-  const linker = (first, second) => {
+  const linker = (first, second, weight) => {
     const newLink = {
       source: first.id, // ID del nodo de origen
       target: second.id, // ID del nodo de destino
-      weight: 0,
+      weight,
     };
 
     // Verificar si el enlace ya existe
@@ -32,7 +33,8 @@ const Graph = ({ nodes, links }) => {
   };
 
   useEffect(() => {
-    console.log(links);
+    console.log({ links });
+    console.log({ showModalPeso });
 
     const svg = d3
       .select(ref.current)
@@ -59,8 +61,10 @@ const Graph = ({ nodes, links }) => {
       .forceSimulation(state.nodes)
       .force(
         "link",
-        d3.forceLink(links).id((d) => d.id)
-        .distance(100)
+        d3
+          .forceLink(links)
+          .id((d) => d.id)
+          .distance(100)
       )
       .force("charge", d3.forceManyBody().strength(0))
       .force("collision", d3.forceCollide().radius(10));
@@ -110,18 +114,16 @@ const Graph = ({ nodes, links }) => {
             );
             break;
           case "LINK":
-            console.log({ nodo: firtsNode.id, count });
-
             if (count < 1 && firtsNode.id == undefined) {
-              console.log("Entro aca");
-
               setFirtsNode(d);
               setCount((c) => c + 1);
+              setShowModalPeso(true);
             } else if (count < 2 && firtsNode.id) {
-              linker(firtsNode, d);
               setCount((c) => c + 1);
-              setCount(0);
+              linker(firtsNode, d, peso);
               setFirtsNode({});
+              setCount(0);
+              setShowModalPeso(false);
             }
             break;
         }
@@ -152,18 +154,16 @@ const Graph = ({ nodes, links }) => {
             );
             break;
           case "LINK":
-            console.log({ nodo: firtsNode.id, count });
-
             if (count < 1 && firtsNode.id == undefined) {
-              console.log("Entro aca");
-
               setFirtsNode(d);
               setCount((c) => c + 1);
+              setShowModalPeso(true);
             } else if (count < 2 && firtsNode.id) {
-              linker(firtsNode, d);
               setCount((c) => c + 1);
-              setCount(0);
+              linker(firtsNode, d, peso);
               setFirtsNode({});
+              setCount(0);
+              setShowModalPeso(false);
             }
             break;
         }
@@ -191,7 +191,7 @@ const Graph = ({ nodes, links }) => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [links, state.nodes, action, count]);
+  }, [links, state.nodes, action, count, peso]);
 
   return <svg ref={ref}></svg>;
 };

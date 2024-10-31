@@ -1,15 +1,15 @@
 import Graph from "../Graph";
-import { useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { DataContext } from "../../context/DataProvider";
+import ModalPeso from "../ModalPeso";
 
 const RenderGraph = () => {
-  const [peso, setPeso] = useState(0);
-
-  const {enlaces, nodes} = useContext(DataContext)
+  const { enlaces, nodes, showModalPeso } = useContext(DataContext);
 
   return (
     <div className="w-full h-dvh">
       <Graph nodes={nodes} links={enlaces} />
+      {showModalPeso ? <ModalPeso /> : null}
     </div>
   );
 };
