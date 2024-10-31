@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 const RenderAlert = ({ action }) => {
   const [msg, setMsg] = useState("");
 
+  console.log({action});
+  
+
   useEffect(() => {
     switch (action) {
       case "INSERT":
@@ -14,6 +17,9 @@ const RenderAlert = ({ action }) => {
         break;
       case "LINK":
         setMsg("Seleccione los nodos a enlazar");
+        break;
+      case "DIJKSTRA":
+        setMsg("Seleccione un nodo de inicio y otro de destino");
         break;
     }
   }, [action]);

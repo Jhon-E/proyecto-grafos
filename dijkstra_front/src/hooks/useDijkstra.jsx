@@ -1,4 +1,4 @@
-export const dijkstra = (nodes, links, startNode) => {
+const useDijkstra = (nodes, links, startNode, endNode) => {
   const distances = {};
   const previous = {};
   const queue = [];
@@ -15,6 +15,8 @@ export const dijkstra = (nodes, links, startNode) => {
     queue.sort((a, b) => distances[a.id] - distances[b.id]);
     const currentNode = queue.shift();
 
+    if (currentNode.id === endNode) break; // Termina si se llega al nodo final
+
     links.forEach((link) => {
       if (link.source === currentNode.id || link.target === currentNode.id) {
         const neighbor =
@@ -28,5 +30,18 @@ export const dijkstra = (nodes, links, startNode) => {
     });
   }
 
-  return { distances, previous };
+  // Reconstrucción del camino más corto
+  const path = [];
+  let currentNode = endNode;
+  while (currentNode !== null) {
+    path.unshift(currentNode);
+    currentNode = previous[currentNode];
+  }
+
+  // Verifica si hay camino o si el nodo final es alcanzable
+  if (path[0] !== startNode) return []; // Retorna un array vacío si no hay ruta válida
+
+  return { path };
 };
+
+export default useDijkstra;

@@ -1,5 +1,5 @@
 import Graph from "../Graph";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { DataContext } from "../../context/DataProvider";
 import ModalPeso from "../ModalPeso";
 

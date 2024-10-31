@@ -1,15 +1,20 @@
 import RenderGraph from "./components/Renders/RenderGraph";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { DataContext } from "./context/DataProvider";
 import RenderNav from "./components/Renders/RenderNav";
 import RenderAlert from "./components/Renders/RenderAlert";
 import { AlertContext } from "./context/AlertProvider";
 import DisplayInfo from "./components/DisplayInfo";
+import useDijkstra from "./hooks/useDijkstra";
 
 function App() {
   const { showAlert } = useContext(AlertContext);
   const { action, setAction } = useContext(DataContext);
-  const [info, setInfo] = useState({});
+  const mousePosition = useRef({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    mousePosition.current = { x: e.clientX, y: e.clientY };
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -28,16 +33,13 @@ function App() {
 
   return (
     <>
-      <main
-        className="w-dvw h-dvh bg-base-100"
-        onMouseMove={(e) => setInfo({ x: e.clientX, y: e.clientY })}
-      >
+      <main className="w-dvw h-dvh bg-base-100" onMouseMove={handleMouseMove}>
         <RenderNav />
         <section id="creador" className="h-full w-full ">
           <RenderGraph />
         </section>
         {showAlert ? <RenderAlert action={action} /> : null}
-        <DisplayInfo info={info} />
+        <DisplayInfo info={mousePosition.current} />
       </main>
       {/*  <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
         <aside>

@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState, useContext, memo } from "react";
 import { DataContext } from "../context/DataProvider";
 
-const ModalPeso = () => {
+const ModalPeso = memo(() => {
   const { setPeso, peso } = useContext(DataContext);
   const [show, setShow] = useState(true);
   console.log({ show });
@@ -10,9 +10,9 @@ const ModalPeso = () => {
     <>
       {show ? (
         <aside className="absolute text-center flex flex-col top-1/2 left-1/2 bg-base-300 p-4 gap-4 rounded-lg -translate-x-1/2 -translate-y-1/2">
-            <label htmlFor="peso">Guardar peso</label>
+          <label htmlFor="peso">Guardar peso</label>
           <input
-            defaultValue={peso}
+            value={peso}
             type="number"
             name="peso"
             placeholder="Ingrese el peso del enlace"
@@ -29,6 +29,6 @@ const ModalPeso = () => {
       ) : null}
     </>
   );
-};
+});
 
 export default ModalPeso;

@@ -50,7 +50,7 @@ const RenderNav = () => {
             <summary>Algoritmos</summary>
             <ul>
               <li>
-                <button>Dijkstra</button>
+                <button onClick={() => {setAction("DIJKSTRA"); setShowAlert(true)}}>Dijkstra</button>
               </li>
               <li>
                 <button>Ejemplo</button>

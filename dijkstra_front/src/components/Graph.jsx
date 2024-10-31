@@ -2,10 +2,11 @@ import { useRef, useEffect, useReducer, useContext, useState } from "react";
 import { DataContext } from "../context/DataProvider";
 import NodeReducer from "../Reducer/NodesReducer";
 import * as d3 from "d3";
+import useDijkstra from "../hooks/useDijkstra";
 
 const Graph = ({ nodes, links }) => {
   const [state, dispatch] = useReducer(NodeReducer, { nodes });
-  const { action, setEnlaces, showModalPeso, setShowModalPeso, peso } =
+  const { action, setEnlaces, showModalPeso, setShowModalPeso, peso, enlaces } =
     useContext(DataContext);
   const [count, setCount] = useState(0);
   const [firtsNode, setFirtsNode] = useState({});
@@ -126,6 +127,18 @@ const Graph = ({ nodes, links }) => {
               setShowModalPeso(false);
             }
             break;
+          case "DIJKSTRA":
+            if (count < 1 && firtsNode.id == undefined) {
+              setFirtsNode(d);
+              setCount((c) => c + 1);
+            } else if (count < 2 && firtsNode.id) {
+              setCount((c) => c + 1);
+              setFirtsNode({});
+              setCount(0);
+              const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id)
+              console.log({result});
+            }
+            break;
         }
       });
 
@@ -164,6 +177,18 @@ const Graph = ({ nodes, links }) => {
               setFirtsNode({});
               setCount(0);
               setShowModalPeso(false);
+            }
+            break;
+          case "DIJKSTRA":
+            if (count < 1 && firtsNode.id == undefined) {
+              setFirtsNode(d);
+              setCount((c) => c + 1);
+            } else if (count < 2 && firtsNode.id) {
+              setCount((c) => c + 1);
+              setFirtsNode({});
+              setCount(0);
+              const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id)
+              console.log({result});
             }
             break;
         }
