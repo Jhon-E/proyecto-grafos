@@ -6,7 +6,7 @@ export const DataProvider = ({ children }) => {
   const [nodes, setNodes] = useState([]);
   const [enlaces, setEnlaces] = useState([]);
   const [peso, setPeso] = useState(0);
-  const [action, setAction] = useState("");
+  const [action, setAction] = useState("DEFAULT");
   const [showModalPeso, setShowModalPeso] = useState(false);
 
   return (
