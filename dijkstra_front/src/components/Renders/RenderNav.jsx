@@ -1,14 +1,17 @@
 import { useContext, useEffect, useRef } from "react";
 import { DataContext } from "../../context/DataProvider";
 import { AlertContext } from "../../context/AlertProvider";
+import { graph_1 } from "../../mocks/Grafos";
 
 const RenderNav = () => {
-  const { setAction } = useContext(DataContext);
+  const { setAction, dispatch } = useContext(DataContext);
   const { setShowAlert } = useContext(AlertContext);
 
   const navRef = useRef();
 
   useEffect(() => {
+    console.log({ graph_1 });
+
     // Cerrar <details> si se hace clic fuera de ellos
     const handleClickOutside = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) {
@@ -34,13 +37,34 @@ const RenderNav = () => {
             <summary>Nodos</summary>
             <ul>
               <li>
-                <button onClick={() => {setAction("INSERT"); setShowAlert(true)}}>Insertar</button>
+                <button
+                  onClick={() => {
+                    setAction("INSERT");
+                    setShowAlert(true);
+                  }}
+                >
+                  Insertar
+                </button>
               </li>
               <li>
-                <button onClick={() => {setAction("DELETE"); setShowAlert(true)}}>Borrar</button>
+                <button
+                  onClick={() => {
+                    setAction("DELETE");
+                    setShowAlert(true);
+                  }}
+                >
+                  Borrar
+                </button>
               </li>
               <li>
-                <button onClick={() => {setAction("LINK"); setShowAlert(true)}}>Enlazar</button>
+                <button
+                  onClick={() => {
+                    setAction("LINK");
+                    setShowAlert(true);
+                  }}
+                >
+                  Enlazar
+                </button>
               </li>
             </ul>
           </details>
@@ -50,10 +74,31 @@ const RenderNav = () => {
             <summary>Algoritmos</summary>
             <ul>
               <li>
-                <button onClick={() => {setAction("DIJKSTRA"); setShowAlert(true)}}>Dijkstra</button>
+                <button
+                  onClick={() => {
+                    setAction("DIJKSTRA");
+                    setShowAlert(true);
+                  }}
+                >
+                  Dijkstra
+                </button>
               </li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>Grafos de ejemplo</summary>
+            <ul>
               <li>
-                <button>Ejemplo</button>
+                <button
+                  onClick={() => {
+                    setAction("GRAPH_1");
+                    dispatch({type: "GRAPH_1", graph_1})
+                  }}
+                >
+                  Grafo 1
+                </button>
               </li>
             </ul>
           </details>

@@ -14,7 +14,7 @@ const Alert = ({ message }) => {
   }, []);
 
   return showAlert ? (
-    <div role="alert" className="alert alert-info fixed bottom-5 right-5 w-max">
+    <div role="alert" className="alert alert-info fixed bottom-5 right-5 w-max p-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

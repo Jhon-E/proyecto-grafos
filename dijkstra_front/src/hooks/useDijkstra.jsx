@@ -6,12 +6,14 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
   nodes.forEach((node) => {
     distances[node.id] = Infinity;
     previous[node.id] = null;
+    console.log(distances[node.id]);
+
     queue.push(node);
   });
 
   distances[startNode] = 0;
 
-  while (queue.length > 0) {
+  /*  while (queue.length > 0) {
     queue.sort((a, b) => distances[a.id] - distances[b.id]);
     const currentNode = queue.shift();
 
@@ -28,15 +30,15 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
         }
       }
     });
-  }
+  } */
 
   // Reconstrucción del camino más corto
   const path = [];
-  let currentNode = endNode;
+  /*let currentNode = endNode;
   while (currentNode !== null) {
     path.unshift(currentNode);
     currentNode = previous[currentNode];
-  }
+  } */
 
   // Verifica si hay camino o si el nodo final es alcanzable
   if (path[0] !== startNode) return []; // Retorna un array vacío si no hay ruta válida

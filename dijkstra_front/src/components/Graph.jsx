@@ -1,13 +1,18 @@
 import { useRef, useEffect, useReducer, useContext, useState } from "react";
 import { DataContext } from "../context/DataProvider";
-import NodeReducer from "../Reducer/NodesReducer";
 import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 
-const Graph = ({ nodes, links }) => {
-  const [state, dispatch] = useReducer(NodeReducer, { nodes });
-  const { action, setEnlaces, showModalPeso, setShowModalPeso, peso, enlaces } =
-    useContext(DataContext);
+const Graph = () => {
+  const {
+    action,
+    setEnlaces,
+    showModalPeso,
+    setShowModalPeso,
+    peso,
+    state,
+    dispatch,
+  } = useContext(DataContext);
   const [count, setCount] = useState(0);
   const [firtsNode, setFirtsNode] = useState({});
 
@@ -19,22 +24,11 @@ const Graph = ({ nodes, links }) => {
       target: second.id, // ID del nodo de destino
       weight,
     };
-
-    // Verificar si el enlace ya existe
-    const linkExists = links.some(
-      (l) =>
-        (l.source.id === newLink.source && l.target.id === newLink.target) ||
-        (l.source.id === newLink.target && l.target.id === newLink.source)
-    );
-
-    // Si el enlace no existe, agregarlo
-    if (!linkExists && first.id !== second.id) {
-      setEnlaces((prevLinks) => [...prevLinks, newLink]);
-    }
+    dispatch({ type: action, newLink });
   };
 
   useEffect(() => {
-    console.log({ links });
+    console.log({ links: state.links });
     console.log({ showModalPeso });
 
     const svg = d3
@@ -63,7 +57,7 @@ const Graph = ({ nodes, links }) => {
       .force(
         "link",
         d3
-          .forceLink(links)
+          .forceLink(state.links)
           .id((d) => d.id)
           .distance(100)
       )
@@ -74,7 +68,7 @@ const Graph = ({ nodes, links }) => {
     const link = svg
       .append("g")
       .selectAll("line")
-      .data(links)
+      .data(state.links)
       .enter()
       .append("line")
       .attr("class", "link")
@@ -85,7 +79,7 @@ const Graph = ({ nodes, links }) => {
     const linkText = svg
       .append("g")
       .selectAll("text")
-      .data(links)
+      .data(state.links)
       .enter()
       .append("text")
       .attr("class", "linkText")
@@ -110,9 +104,6 @@ const Graph = ({ nodes, links }) => {
         switch (action) {
           case "DELETE":
             dispatch({ type: action, d });
-            setEnlaces((en) =>
-              en.filter((l) => l.source.id !== d.id && l.target.id !== d.id)
-            );
             break;
           case "LINK":
             if (count < 1 && firtsNode.id == undefined) {
@@ -135,8 +126,8 @@ const Graph = ({ nodes, links }) => {
               setCount((c) => c + 1);
               setFirtsNode({});
               setCount(0);
-              const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id)
-              console.log({result});
+              /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
+              console.log({ result }); */
             }
             break;
         }
@@ -162,9 +153,6 @@ const Graph = ({ nodes, links }) => {
         switch (action) {
           case "DELETE":
             dispatch({ type: action, d });
-            setEnlaces((en) =>
-              en.filter((l) => l.source.id !== d.id && l.target.id !== d.id)
-            );
             break;
           case "LINK":
             if (count < 1 && firtsNode.id == undefined) {
@@ -187,8 +175,8 @@ const Graph = ({ nodes, links }) => {
               setCount((c) => c + 1);
               setFirtsNode({});
               setCount(0);
-              const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id)
-              console.log({result});
+              /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
+              console.log({ result }); */
             }
             break;
         }
@@ -216,7 +204,7 @@ const Graph = ({ nodes, links }) => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [links, state.nodes, action, count, peso]);
+  }, [state.links, state.nodes, action, count, peso]);
 
   return <svg ref={ref}></svg>;
 };

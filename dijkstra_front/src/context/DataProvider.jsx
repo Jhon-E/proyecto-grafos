@@ -1,10 +1,15 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useReducer } from "react";
+import NodesReducer from "../Reducer/NodesReducer"
 
 export const DataContext = createContext();
 
+const initialState = {
+  nodes: [],
+  links: [],
+};
+
 export const DataProvider = ({ children }) => {
-  const [nodes, setNodes] = useState([]);
-  const [enlaces, setEnlaces] = useState([]);
+  const [state, dispatch] = useReducer(NodesReducer, initialState);
   const [peso, setPeso] = useState(0);
   const [action, setAction] = useState("DEFAULT");
   const [showModalPeso, setShowModalPeso] = useState(false);
@@ -12,13 +17,11 @@ export const DataProvider = ({ children }) => {
   return (
     <DataContext.Provider
       value={{
-        nodes,
-        enlaces,
+        state,
         peso,
         action,
         showModalPeso,
-        setNodes,
-        setEnlaces,
+        dispatch,
         setPeso,
         setAction,
         setShowModalPeso,
