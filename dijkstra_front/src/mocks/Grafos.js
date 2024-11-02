@@ -59,3 +59,29 @@ const links3 = [
 ];
 
 export const graph_3 = { nodes3, links3 };
+
+const nodes4 = [
+  { id: "0", name: "Nodo A", x: width, y: 100 },
+  { id: "1", name: "Nodo B", x: width + 100, y: 200 },
+  { id: "2", name: "Nodo C", x: width - 100, y: 300 },
+  { id: "3", name: "Nodo D", x: width + 200, y: 400 },
+  { id: "4", name: "Nodo E", x: width - 200, y: 500 },
+  { id: "5", name: "Nodo F", x: width + 300, y: 600 },
+  { id: "6", name: "Nodo G", x: width - 300, y: 700 },
+  { id: "7", name: "Nodo H", x: width, y: 800 },
+];
+
+const links4 = [
+  { source: "0", target: "1", weight: 2 },
+  { source: "0", target: "2", weight: 3 },
+  { source: "1", target: "3", weight: 4 },
+  { source: "2", target: "4", weight: 1 },
+  { source: "3", target: "5", weight: 5 },
+  { source: "4", target: "6", weight: 2 },
+  { source: "5", target: "7", weight: 6 },
+  { source: "6", target: "7", weight: 3 },
+  { source: "1", target: "2", weight: 7 },
+  { source: "3", target: "4", weight: 1 },
+];
+
+export const graph_4 = { nodes4, links4 };

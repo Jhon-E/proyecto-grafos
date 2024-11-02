@@ -9,20 +9,15 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
   //DEFINO FUNCION RELAX (nodoactual, vecino, peso)
   const RELAX = (u, v, weight) => {
     const alt = distances[u.id] + weight;
-    
 
     if (alt < distances[v.id]) {
       distances[v.id] = alt;
       previous[v.id] = u.id;
 
-      console.warn("EEEEEEEEEEE");
-
       // Reinserto el nodo en la cola para actualizar su posición
       const neighborIndex = queue.findIndex((n) => n.id === v.id);
       if (neighborIndex !== -1) {
         queue.splice(neighborIndex, 1, nodes.find(n => n.id === v.id));
-        console.warn("AAAAAAAAAAAAAAA");
-        console.log({queue});
         
       }
     }
@@ -36,8 +31,6 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
   });
 
   distances[startNode.id] = 0;
-
-  console.log("Queue: ",queue);
   
 
   while (queue.length > 0) {
@@ -70,8 +63,7 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
     path.unshift(currentNode);
     currentNode = previous[currentNode];
   }
-  
-  console.log({ path, distance: distances[endNode.id] });
+console.log({ path, distance: distances[endNode.id] });
 
   // Verifica si hay camino o si el nodo final es alcanzable
   if (path[0] !== startNode.id) return { path: [], distance: Infinity }; // Retorna un array vacío si no hay ruta válida

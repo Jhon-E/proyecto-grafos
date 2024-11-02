@@ -3,6 +3,26 @@ import { DataContext } from "../context/DataProvider";
 import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 
+const pathLinks = (path, links) => {
+  const pathLinks = [];
+  for (let i = 0; i < path.length - 1; i++) {
+    const source = path[i];
+    const target = path[i + 1];
+    const link = links.find(
+      (l) =>
+        (l.source.id === source && l.target.id === target) ||
+        (l.source.id === target && l.target.id === source)
+    );
+    if (link) {
+      pathLinks.push(link);
+    }
+  }
+
+  console.log({ pathLinks });
+
+  return pathLinks;
+};
+
 const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
     useContext(DataContext);
@@ -11,7 +31,9 @@ const Graph = () => {
 
   const ref = useRef(null);
 
-  const handlerNode = (e, d) => {
+  const handlerNode = (e, d, svg) => {
+    svg.selectAll(".node").style("fill", "#69b3a2")
+    svg.selectAll(".link").attr("stroke", "black")
     switch (action) {
       case "DELETE":
         dispatch({ type: action, d });
@@ -27,16 +49,25 @@ const Graph = () => {
         }
         break;
       case "DIJKSTRA":
-        console.log({ d: d.id, firtsNode: firtsNodeRef.current });
         if (!firtsNodeRef.current) {
-          console.log("epale");
           firtsNodeRef.current = d;
+          svg
+            .select(`#node-${firtsNodeRef.current.id}`)
+            .style("fill", "#69b3a2");
         } else {
-          const {path, distance} = useDijkstra(
+          const { path, distance } = useDijkstra(
             state.nodes,
             state.links,
             firtsNodeRef.current,
             d
+          );
+          const p_l = pathLinks(path, state.links);
+          path.forEach((p) => {
+            svg.select(`#node-${p}`).style("fill", "#ffffff");
+          });
+
+          p_l.forEach((l) =>
+            svg.select(`#link-${l.index}`).attr("stroke", "#ffffff")
           );
           firtsNodeRef.current = null;
         }
@@ -95,6 +126,7 @@ const Graph = () => {
       .enter()
       .append("line")
       .attr("class", "link")
+      .attr("id", (d, i) => `link-${i}`)
       .attr("stroke", "black")
       .attr("stroke-width", 3.5);
 
@@ -117,13 +149,14 @@ const Graph = () => {
       .data(state.nodes)
       .enter()
       .append("circle")
-      .attr("class", "node")
+      .attr("class", (d) => `node`)
+      .attr("id", (d) => `node-${d.id}`)
       .attr("r", 15)
       .attr("fill", "#69b3a2")
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
-      .on("click", (e, d) => handlerNode(e, d));
+      .on("click", (e, d) => handlerNode(e, d, svg));
 
     // Unir y actualizar textos de nodos
     const nodeText = svg
@@ -141,7 +174,7 @@ const Graph = () => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
-      .on("click", (e, d) => handlerNode(e, d));
+      .on("click", (e, d) => handlerNode(e, d, svg));
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
