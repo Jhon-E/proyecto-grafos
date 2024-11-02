@@ -30,7 +30,7 @@ const RenderNav = () => {
 
   /* PARA QUE SEA DESPLEGABLE DENTRO DE UNA ETIQUETA LI DEBE HABER UNA ETIQUETA DETAILS CON SUS SUMMARYS */
   return (
-    <nav ref={navRef} className="h-auto fixed left-2/4 -translate-x-2/4 top-3">
+    <nav ref={navRef} className=" backdrop-blur-lg h-auto fixed left-2/4 -translate-x-2/4 top-3">
       <ul className="menu lg:menu-horizontal bg-base-200 rounded-box gap-6">
         <li>
           <details>

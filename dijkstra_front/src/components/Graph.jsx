@@ -6,10 +6,10 @@ import useDijkstra from "../hooks/useDijkstra";
 const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
     useContext(DataContext);
-  const [count, setCount] = useState(0);
-  const [firtsNode, setFirtsNode] = useState({});
 
-  const ref = useRef();
+  const firtsNodeRef = useRef();
+
+  const ref = useRef(null);
 
   const handlerNode = (e, d) => {
     switch (action) {
@@ -17,28 +17,28 @@ const Graph = () => {
         dispatch({ type: action, d });
         break;
       case "LINK":
-        if (count < 1 && firtsNode.id == undefined) {
-          setFirtsNode(d);
-          setCount((c) => c + 1);
+        if (!firtsNodeRef.current) {
+          firtsNodeRef.current = d;
           setShowModalPeso(true);
-        } else if (count < 2 && firtsNode.id) {
-          setCount((c) => c + 1);
-          linker(firtsNode, d, peso);
-          setFirtsNode({});
-          setCount(0);
+        } else {
+          linker(firtsNodeRef.current, d, peso);
+          firtsNodeRef.current = null;
           setShowModalPeso(false);
         }
         break;
       case "DIJKSTRA":
-        if (count < 1 && firtsNode.id == undefined) {
-          setFirtsNode(d);
-          setCount((c) => c + 1);
-        } else if (count < 2 && firtsNode.id) {
-          setCount((c) => c + 1);
-          setFirtsNode({});
-          setCount(0);
-          /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
-          console.log({ result }); */
+        console.log({ d: d.id, firtsNode: firtsNodeRef.current });
+        if (!firtsNodeRef.current) {
+          console.log("epale");
+          firtsNodeRef.current = d;
+        } else {
+          const {path, distance} = useDijkstra(
+            state.nodes,
+            state.links,
+            firtsNodeRef.current,
+            d
+          );
+          firtsNodeRef.current = null;
         }
         break;
     }
@@ -61,7 +61,7 @@ const Graph = () => {
       .on("click", (e) => {
         const [x, y] = d3.pointer(e);
         const newNode = {
-          id: `${state.nodes.length + 1}`,
+          id: `${state.nodes.length}`,
           name: `Nodo ${state.nodes.length + 1}`,
           x,
           y,
@@ -106,9 +106,7 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "linkText")
-      .attr("x", d => (d.source.x + d.target.x) / 2)
-      .attr("y", d => (d.source.y + d.target.y) / 2 - 200)
-      .attr("fill", "#00a800")
+      .attr("fill", "#fff")
       .attr("font-size", "20px")
       .text((d) => d.weight);
 
@@ -125,7 +123,7 @@ const Graph = () => {
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
-      .on("click", handlerNode);
+      .on("click", (e, d) => handlerNode(e, d));
 
     // Unir y actualizar textos de nodos
     const nodeText = svg
@@ -143,7 +141,7 @@ const Graph = () => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
-      .on("click", handlerNode);
+      .on("click", (e, d) => handlerNode(e, d));
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
@@ -167,7 +165,7 @@ const Graph = () => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [state.links, state.nodes, action, count, peso]);
+  }, [state.links, state.nodes, action, peso]);
 
   return <svg ref={ref}></svg>;
 };
