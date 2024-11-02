@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { DataContext } from "../../context/DataProvider";
 import { AlertContext } from "../../context/AlertProvider";
-import { graph_1 } from "../../mocks/Grafos";
+import { graph_1, graph_2, graph_3 } from "../../mocks/Grafos";
 
 const RenderNav = () => {
   const { setAction, dispatch } = useContext(DataContext);
@@ -98,6 +98,26 @@ const RenderNav = () => {
                   }}
                 >
                   Grafo 1
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setAction("GRAPH_2");
+                    dispatch({type: "GRAPH_2", graph_2})
+                  }}
+                >
+                  Grafo 2
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setAction("GRAPH_3");
+                    dispatch({type: "GRAPH_3", graph_3})
+                  }}
+                >
+                  Grafo 3
                 </button>
               </li>
             </ul>

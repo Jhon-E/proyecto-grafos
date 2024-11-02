@@ -39,6 +39,16 @@ const NodesReducer = (state, action) => {
         nodes: action.graph_1.nodes,
         links: action.graph_1.links,
       };
+    case "GRAPH_2":
+      return {
+        nodes: action.graph_2.nodes2,
+        links: action.graph_2.links2,
+      };
+    case "GRAPH_3":
+      return {
+        nodes: action.graph_3.nodes3,
+        links: action.graph_3.links3,
+      };
     default:
       throw new Error("Error en el reducer de los nodos.");
   }

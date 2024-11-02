@@ -4,19 +4,45 @@ import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 
 const Graph = () => {
-  const {
-    action,
-    setEnlaces,
-    showModalPeso,
-    setShowModalPeso,
-    peso,
-    state,
-    dispatch,
-  } = useContext(DataContext);
+  const { action, setShowModalPeso, peso, state, dispatch } =
+    useContext(DataContext);
   const [count, setCount] = useState(0);
   const [firtsNode, setFirtsNode] = useState({});
 
   const ref = useRef();
+
+  const handlerNode = (e, d) => {
+    switch (action) {
+      case "DELETE":
+        dispatch({ type: action, d });
+        break;
+      case "LINK":
+        if (count < 1 && firtsNode.id == undefined) {
+          setFirtsNode(d);
+          setCount((c) => c + 1);
+          setShowModalPeso(true);
+        } else if (count < 2 && firtsNode.id) {
+          setCount((c) => c + 1);
+          linker(firtsNode, d, peso);
+          setFirtsNode({});
+          setCount(0);
+          setShowModalPeso(false);
+        }
+        break;
+      case "DIJKSTRA":
+        if (count < 1 && firtsNode.id == undefined) {
+          setFirtsNode(d);
+          setCount((c) => c + 1);
+        } else if (count < 2 && firtsNode.id) {
+          setCount((c) => c + 1);
+          setFirtsNode({});
+          setCount(0);
+          /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
+          console.log({ result }); */
+        }
+        break;
+    }
+  };
 
   const linker = (first, second, weight) => {
     const newLink = {
@@ -28,9 +54,6 @@ const Graph = () => {
   };
 
   useEffect(() => {
-    console.log({ links: state.links });
-    console.log({ showModalPeso });
-
     const svg = d3
       .select(ref.current)
       .attr("width", "100%")
@@ -59,10 +82,10 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(100)
+          .distance(150)
       )
-      .force("charge", d3.forceManyBody().strength(0))
-      .force("collision", d3.forceCollide().radius(10));
+      .force("charge", d3.forceManyBody().strength(-25))
+      .force("collision", d3.forceCollide().radius(30));
 
     // Unir y actualizar enlaces
     const link = svg
@@ -83,6 +106,8 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "linkText")
+      .attr("x", d => (d.source.x + d.target.x) / 2)
+      .attr("y", d => (d.source.y + d.target.y) / 2 - 200)
       .attr("fill", "#00a800")
       .attr("font-size", "20px")
       .text((d) => d.weight);
@@ -100,38 +125,7 @@ const Graph = () => {
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
-      .on("click", (e, d) => {
-        switch (action) {
-          case "DELETE":
-            dispatch({ type: action, d });
-            break;
-          case "LINK":
-            if (count < 1 && firtsNode.id == undefined) {
-              setFirtsNode(d);
-              setCount((c) => c + 1);
-              setShowModalPeso(true);
-            } else if (count < 2 && firtsNode.id) {
-              setCount((c) => c + 1);
-              linker(firtsNode, d, peso);
-              setFirtsNode({});
-              setCount(0);
-              setShowModalPeso(false);
-            }
-            break;
-          case "DIJKSTRA":
-            if (count < 1 && firtsNode.id == undefined) {
-              setFirtsNode(d);
-              setCount((c) => c + 1);
-            } else if (count < 2 && firtsNode.id) {
-              setCount((c) => c + 1);
-              setFirtsNode({});
-              setCount(0);
-              /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
-              console.log({ result }); */
-            }
-            break;
-        }
-      });
+      .on("click", handlerNode);
 
     // Unir y actualizar textos de nodos
     const nodeText = svg
@@ -149,38 +143,7 @@ const Graph = () => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
-      .on("click", (e, d) => {
-        switch (action) {
-          case "DELETE":
-            dispatch({ type: action, d });
-            break;
-          case "LINK":
-            if (count < 1 && firtsNode.id == undefined) {
-              setFirtsNode(d);
-              setCount((c) => c + 1);
-              setShowModalPeso(true);
-            } else if (count < 2 && firtsNode.id) {
-              setCount((c) => c + 1);
-              linker(firtsNode, d, peso);
-              setFirtsNode({});
-              setCount(0);
-              setShowModalPeso(false);
-            }
-            break;
-          case "DIJKSTRA":
-            if (count < 1 && firtsNode.id == undefined) {
-              setFirtsNode(d);
-              setCount((c) => c + 1);
-            } else if (count < 2 && firtsNode.id) {
-              setCount((c) => c + 1);
-              setFirtsNode({});
-              setCount(0);
-              /* const result = useDijkstra(nodes, enlaces, firtsNode.id, d.id);
-              console.log({ result }); */
-            }
-            break;
-        }
-      });
+      .on("click", handlerNode);
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
