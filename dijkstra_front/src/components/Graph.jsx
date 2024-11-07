@@ -1,5 +1,6 @@
-import { useRef, useEffect, useReducer, useContext, useState } from "react";
+import { useRef, useEffect, useReducer, useContext } from "react";
 import { DataContext } from "../context/DataProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 
@@ -26,13 +27,14 @@ const pathLinks = (path, links) => {
 const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
     useContext(DataContext);
+    const { theme } = useContext(ThemeContext)
 
   const firtsNodeRef = useRef();
 
   const ref = useRef(null);
 
   const handlerNode = (e, d, svg) => {
-    svg.selectAll(".node").style("fill", "#69b3a2")
+    svg.selectAll(".node").style("fill", theme == 'dark'?"white":"black")
     svg.selectAll(".link").attr("stroke", "black")
     switch (action) {
       case "DELETE":
@@ -53,7 +55,7 @@ const Graph = () => {
           firtsNodeRef.current = d;
           svg
             .select(`#node-${firtsNodeRef.current.id}`)
-            .style("fill", "#69b3a2");
+            .style("fill", "#2525ff");
         } else {
           const { path, distance } = useDijkstra(
             state.nodes,
@@ -63,11 +65,11 @@ const Graph = () => {
           );
           const p_l = pathLinks(path, state.links);
           path.forEach((p) => {
-            svg.select(`#node-${p}`).style("fill", "#ffffff");
+            svg.select(`#node-${p}`).style("fill", "#2525ff");
           });
 
           p_l.forEach((l) =>
-            svg.select(`#link-${l.index}`).attr("stroke", "#ffffff")
+            svg.select(`#link-${l.index}`).attr("stroke", "#2525ff")
           );
           firtsNodeRef.current = null;
         }
@@ -115,7 +117,7 @@ const Graph = () => {
           .id((d) => d.id)
           .distance(150)
       )
-      .force("charge", d3.forceManyBody().strength(-25))
+      .force("charge", d3.forceManyBody().strength(0))
       .force("collision", d3.forceCollide().radius(30));
 
     // Unir y actualizar enlaces
@@ -127,7 +129,7 @@ const Graph = () => {
       .append("line")
       .attr("class", "link")
       .attr("id", (d, i) => `link-${i}`)
-      .attr("stroke", "black")
+      .attr("stroke", theme == 'dark'?"black":"grey")
       .attr("stroke-width", 3.5);
 
     // Unir y actualizar textos de enlaces
@@ -138,7 +140,7 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "linkText")
-      .attr("fill", "#fff")
+      .attr("fill", theme == 'dark'?"white":"black")
       .attr("font-size", "20px")
       .text((d) => d.weight);
 
@@ -152,7 +154,7 @@ const Graph = () => {
       .attr("class", (d) => `node`)
       .attr("id", (d) => `node-${d.id}`)
       .attr("r", 15)
-      .attr("fill", "#69b3a2")
+      .attr("fill", theme == 'dark'?"white":"black")
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
@@ -166,7 +168,7 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "nodeText")
-      .attr("fill", "black")
+      .attr("fill", theme == 'dark'?"black":"white")
       .attr("font-size", "12px")
       .attr("text-anchor", "middle")
       .attr("font-weight", 750)
@@ -198,7 +200,7 @@ const Graph = () => {
       simulation.stop();
       svg.selectAll("*").remove();
     };
-  }, [state.links, state.nodes, action, peso]);
+  }, [state.links, state.nodes, action, peso, theme]);
 
   return <svg ref={ref}></svg>;
 };

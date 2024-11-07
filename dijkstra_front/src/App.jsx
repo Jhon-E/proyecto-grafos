@@ -5,10 +5,12 @@ import RenderNav from "./components/Renders/RenderNav";
 import RenderAlert from "./components/Renders/RenderAlert";
 import { AlertContext } from "./context/AlertProvider";
 import DisplayInfo from "./components/DisplayInfo";
+import { ThemeContext } from "./context/ThemeProvider";
 
 function App() {
   const { showAlert } = useContext(AlertContext);
   const { action, setAction } = useContext(DataContext);
+  const { theme } = useContext(ThemeContext)
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -27,7 +29,7 @@ function App() {
 
   return (
     <>
-      <main className="w-dvw h-dvh bg-base-100">
+      <main className="w-dvw h-dvh bg-base-100" data-theme={theme}>
         <RenderNav />
         <section id="creador" className="h-full w-full ">
           <RenderGraph />
