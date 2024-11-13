@@ -35,7 +35,7 @@ const Graph = () => {
 
   const handlerNode = (e, d, svg) => {
     svg.selectAll(".node").style("fill", theme == 'dark'?"white":"black")
-    svg.selectAll(".link").attr("stroke", "black")
+    svg.selectAll(".link").attr("stroke",  theme == 'dark'?"black":"grey")
     switch (action) {
       case "DELETE":
         dispatch({ type: action, d });
@@ -115,7 +115,7 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(150)
+          .distance(200)
       )
       .force("charge", d3.forceManyBody().strength(0))
       .force("collision", d3.forceCollide().radius(30));
