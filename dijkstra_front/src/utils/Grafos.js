@@ -12,14 +12,15 @@ const nodes = [
 
 const links = [
   { source: "0", target: "1", weight: 2 },
-  { source: "1", target: "2", weight: 3 },
   { source: "2", target: "3", weight: 4 },
-  { source: "3", target: "4", weight: 2 },
   { source: "4", target: "5", weight: 5 },
-  { source: "1", target: "3", weight: 2 },
   { source: "2", target: "4", weight: 3 },
   { source: "5", target: "4", weight: 3 },
   { source: "3", target: "0", weight: 3 },
+  { source: "0", target: "2", weight: 1 },
+  { source: "4", target: "1", weight: 5 },
+  { source: "4", target: "5", weight: 6 },
+  { source: "1", target: "5", weight: 10 },
 ];
 
 export const graph_1 = { nodes, links };
@@ -40,6 +41,7 @@ const links2 = [
   { source: "2", target: "3", weight: 1 },
   { source: "3", target: "4", weight: 5 },
   { source: "1", target: "4", weight: 6 },
+  { source: "2", target: "4", weight: 3 },
 ];
 
 export const graph_2 = { nodes2, links2 };

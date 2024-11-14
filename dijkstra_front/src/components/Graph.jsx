@@ -120,10 +120,14 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(200)
+          .distance(150)
+          
       )
-      .force("charge", d3.forceManyBody().strength(0))
-      .force("collision", d3.forceCollide().radius(30));
+      .force("charge", d3.forceManyBody().strength(-200))
+      .force("collision", d3.forceCollide().radius(40))
+      //.force("center", d3.forceCenter(ref.current.clientWidth / 2, ref.current.clientHeight / 2))
+      .force("radial", d3.forceRadial(200, ref.current.clientWidth / 2, ref.current.clientHeight / 2));
+      
 
     // Unir y actualizar enlaces
     const link = svg
@@ -133,7 +137,7 @@ const Graph = () => {
       .enter()
       .append("line")
       .attr("class", "link")
-      .attr("id", (d, i) => `link-${i}`)
+      .attr("id", (_, i) => `link-${i}`)
       .attr("stroke", theme == "dark" ? "black" : "grey")
       .attr("stroke-width", 3.5);
 
@@ -143,10 +147,23 @@ const Graph = () => {
       .selectAll("text")
       .data(state.links)
       .enter()
+      .append("g");
+
+    linkText
+      .append("rect")
+      .attr("fill", theme == "dark" ? "black" : "grey")
+      .attr("rx", 10)
+      .attr("width", 20)
+      .attr("height", 25)
+      .attr("class", "backText");
+
+    linkText
       .append("text")
       .attr("class", "linkText")
-      .attr("fill", theme == "dark" ? "white" : "black")
+      .attr("fill", "white")
       .attr("font-size", "20px")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
       .text((d) => d.weight);
 
     // Unir y actualizar nodos
@@ -156,7 +173,7 @@ const Graph = () => {
       .data(state.nodes)
       .enter()
       .append("circle")
-      .attr("class", (d) => `node`)
+      .attr("class", `node`)
       .attr("id", (d) => `node-${d.id}`)
       .attr("r", 15)
       .attr("fill", theme == "dark" ? "white" : "black")
@@ -192,6 +209,12 @@ const Graph = () => {
         .attr("y2", (d) => d.target.y);
 
       linkText
+        .selectAll("rect")
+        .attr("x", (d) => (d.source.x + d.target.x) / 2 - 10)
+        .attr("y", (d) => (d.source.y + d.target.y) / 2 - 10);
+
+      linkText
+        .selectAll("text")
         .attr("x", (d) => (d.source.x + d.target.x) / 2)
         .attr("y", (d) => (d.source.y + d.target.y) / 2);
 

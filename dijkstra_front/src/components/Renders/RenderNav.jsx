@@ -149,8 +149,8 @@ const RenderNav = () => {
             </ul>
           </details>
         </li>
-        <li onClick={ () => setTheme((t) => t == 'light'?'dark':'light')}>
-          <label className="flex cursor-pointer gap-2">
+        <li>
+          <label className="flex cursor-pointer gap-2" onClick={ () => setTheme((t) => t === 'light'?'dark':'light')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
