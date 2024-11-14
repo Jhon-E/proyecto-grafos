@@ -1,0 +1,41 @@
+# Logs
+dijkstra_front/logs
+dijkstra_front/*.log
+dijkstra_front/npm-debug.log*
+dijkstra_front/yarn-debug.log*
+dijkstra_front/pnpm-debug.log*
+
+# Dependency directories
+dijkstra_front/node_modules/
+dijkstra_front/package-lock.json
+
+# Build output
+dijkstra_front/dist/
+dijkstra_front/build/
+
+# Vite cache
+dijkstra_front/.vite/
+
+# Local environment files
+dijkstra_front/.env
+dijkstra_front/.env.local
+dijkstra_front/.env.*.local
+
+# Editor directories and files
+dijkstra_front/.vscode/
+dijkstra_front/.idea/
+dijkstra_front/*.suo
+dijkstra_front/*.ntvs*
+dijkstra_front/*.njsproj
+dijkstra_front/*.sln
+
+# MacOS files
+dijkstra_front/.DS_Store
+
+# Windows files
+dijkstra_front/Thumbs.db
+.vercel
+
+# entorno
+
+ven/
