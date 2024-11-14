@@ -1,8 +1,9 @@
-import { useRef, useEffect, useReducer, useContext } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { DataContext } from "../context/DataProvider";
 import { ThemeContext } from "../context/ThemeProvider";
 import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
+import useHospitalLocation from "../hooks/useHospitalLocation";
 
 const pathLinks = (path, links) => {
   const pathLinks = [];
@@ -18,24 +19,21 @@ const pathLinks = (path, links) => {
       pathLinks.push(link);
     }
   }
-
-  console.log({ pathLinks });
-
   return pathLinks;
 };
 
 const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
     useContext(DataContext);
-    const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext);
 
   const firtsNodeRef = useRef();
 
   const ref = useRef(null);
 
   const handlerNode = (e, d, svg) => {
-    svg.selectAll(".node").style("fill", theme == 'dark'?"white":"black")
-    svg.selectAll(".link").attr("stroke",  theme == 'dark'?"black":"grey")
+    svg.selectAll(".node").style("fill", theme == "dark" ? "white" : "black");
+    svg.selectAll(".link").attr("stroke", theme == "dark" ? "black" : "grey");
     switch (action) {
       case "DELETE":
         dispatch({ type: action, d });
@@ -74,6 +72,15 @@ const Graph = () => {
           firtsNodeRef.current = null;
         }
         break;
+      case "FLOYD_WARSHALL":
+        const { centerNode, excentricity, distances } = useHospitalLocation(
+          state.nodes,
+          state.links
+        );
+        console.log({ centerNode, excentricity, distances });
+
+        svg.select(`#node-${centerNode}`).style("fill", "#2525ff");
+        break;
     }
   };
 
@@ -99,9 +106,7 @@ const Graph = () => {
           x,
           y,
         };
-        action == "INSERT"
-          ? dispatch({ type: action, newNode })
-          : console.log("No es insert");
+        action == "INSERT" ? dispatch({ type: action, newNode }) : null;
       });
 
     // Limpiar elementos existentes
@@ -129,7 +134,7 @@ const Graph = () => {
       .append("line")
       .attr("class", "link")
       .attr("id", (d, i) => `link-${i}`)
-      .attr("stroke", theme == 'dark'?"black":"grey")
+      .attr("stroke", theme == "dark" ? "black" : "grey")
       .attr("stroke-width", 3.5);
 
     // Unir y actualizar textos de enlaces
@@ -140,7 +145,7 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "linkText")
-      .attr("fill", theme == 'dark'?"white":"black")
+      .attr("fill", theme == "dark" ? "white" : "black")
       .attr("font-size", "20px")
       .text((d) => d.weight);
 
@@ -154,7 +159,7 @@ const Graph = () => {
       .attr("class", (d) => `node`)
       .attr("id", (d) => `node-${d.id}`)
       .attr("r", 15)
-      .attr("fill", theme == 'dark'?"white":"black")
+      .attr("fill", theme == "dark" ? "white" : "black")
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
@@ -168,7 +173,7 @@ const Graph = () => {
       .enter()
       .append("text")
       .attr("class", "nodeText")
-      .attr("fill", theme == 'dark'?"black":"white")
+      .attr("fill", theme == "dark" ? "black" : "white")
       .attr("font-size", "12px")
       .attr("text-anchor", "middle")
       .attr("font-weight", 750)

@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 const RenderAlert = ({ action }) => {
   const [msg, setMsg] = useState("");
 
-  console.log({action});
-  
-
   useEffect(() => {
     switch (action) {
       case "INSERT":

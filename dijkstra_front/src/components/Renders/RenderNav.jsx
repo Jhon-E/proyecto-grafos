@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { DataContext } from "../../context/DataProvider";
 import { AlertContext } from "../../context/AlertProvider";
 import { ThemeContext } from "../../context/ThemeProvider";
-import { graph_1, graph_2, graph_3, graph_4 } from "../../mocks/Grafos";
+import { graph_1, graph_2, graph_3, graph_4 } from "../../utils/Grafos";
 
 const RenderNav = () => {
   const { setAction, dispatch } = useContext(DataContext);
@@ -12,8 +12,6 @@ const RenderNav = () => {
   const navRef = useRef();
 
   useEffect(() => {
-    console.log({ graph_1 });
-
     // Cerrar <details> si se hace clic fuera de ellos
     const handleClickOutside = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) {
@@ -37,6 +35,7 @@ const RenderNav = () => {
       className=" backdrop-blur-lg h-auto fixed left-2/4 -translate-x-2/4 top-3"
     >
       <ul className="menu lg:menu-horizontal bg-base-200 rounded-box gap-6">
+        {/* NODOS */}
         <li>
           <details>
             <summary>Nodos</summary>
@@ -74,6 +73,7 @@ const RenderNav = () => {
             </ul>
           </details>
         </li>
+        {/* ALGORITMOS */}
         <li>
           <details>
             <summary>Algoritmos</summary>
@@ -88,9 +88,20 @@ const RenderNav = () => {
                   Dijkstra
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setAction("FLOYD_WARSHALL");
+                    setShowAlert(true);
+                  }}
+                >
+                  Floyd-Warshall
+                </button>
+              </li>
             </ul>
           </details>
         </li>
+        {/* EJEMPLOS */}
         <li>
           <details>
             <summary>Grafos de ejemplo</summary>

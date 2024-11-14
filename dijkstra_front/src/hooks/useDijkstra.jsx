@@ -1,9 +1,9 @@
 const useDijkstra = (nodes, links, startNode, endNode) => {
-  //tendrá las distancias
+  //tendrá las distancias de cada nodo
   const distances = {};
   //los nodos previos o visitados | S
   const previous = {};
-  //cola de prioridad que tendrá los pesos acumulados
+  //cola de prioridad donde estan los nodos por visitar
   const queue = [];
 
   //DEFINO FUNCION RELAX (nodoactual, vecino, peso)
@@ -14,11 +14,14 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
       distances[v.id] = alt;
       previous[v.id] = u.id;
 
-      // Reinserto el nodo en la cola para actualizar su posición
+      // Reinserto el nodo en la cola
       const neighborIndex = queue.findIndex((n) => n.id === v.id);
       if (neighborIndex !== -1) {
-        queue.splice(neighborIndex, 1, nodes.find(n => n.id === v.id));
-        
+        queue.splice(
+          neighborIndex,
+          1,
+          nodes.find((n) => n.id === v.id)
+        );
       }
     }
   };
@@ -31,14 +34,14 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
   });
 
   distances[startNode.id] = 0;
-  
 
   while (queue.length > 0) {
     queue.sort((a, b) => distances[a.id] - distances[b.id]);
     //peso actual | U
-    const currentNode = queue.shift(); // Extraigo el nodo con la menor distancia
+    const currentNode = queue.shift(); // Extraigo el nodo con menor peso o distancia
 
-    if (currentNode.id === endNode.id) break;
+    //ESTO ES DE UN NODO A OTRO
+    //if (currentNode.id === endNode.id) break;
 
     //segundo bucle
 
@@ -58,18 +61,19 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
 
   // Reconstrucción del camino más corto
   const path = [];
-  let currentNode = endNode.id;
-  while (currentNode !== null) {
-    path.unshift(currentNode);
-    currentNode = previous[currentNode];
+  if (!!endNode) {
+    let currentNode = endNode.id;
+    while (currentNode !== null) {
+      path.unshift(currentNode);
+      currentNode = previous[currentNode];
+    }
   }
-console.log({ path, distance: distances[endNode.id] });
+  //console.log({ path, distances, previous });
 
   // Verifica si hay camino o si el nodo final es alcanzable
-  if (path[0] !== startNode.id) return { path: [], distance: Infinity }; // Retorna un array vacío si no hay ruta válida
+  //if (path[0] !== startNode.id) return { path: [], distances: Infinity }; // Retorna un array vacío si no hay ruta válida
 
-  
-  return { path, distance: distances[endNode.id] };
+  return { path, distances };
 };
 
 export default useDijkstra;
