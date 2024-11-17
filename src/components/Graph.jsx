@@ -123,10 +123,10 @@ const Graph = () => {
           .distance(150)
           
       )
-      .force("charge", d3.forceManyBody().strength(-200))
+      /* .force("charge", d3.forceManyBody().strength(-200))
       .force("collision", d3.forceCollide().radius(40))
-      //.force("center", d3.forceCenter(ref.current.clientWidth / 2, ref.current.clientHeight / 2))
-      .force("radial", d3.forceRadial(200, ref.current.clientWidth / 2, ref.current.clientHeight / 2));
+      .force("center", d3.forceCenter(ref.current.clientWidth / 2, ref.current.clientHeight / 2))
+      .force("radial", d3.forceRadial(200, ref.current.clientWidth / 2, ref.current.clientHeight / 2)); */
       
 
     // Unir y actualizar enlaces
