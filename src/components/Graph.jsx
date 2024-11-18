@@ -1,6 +1,7 @@
 import { useRef, useEffect, useContext } from "react";
 import { DataContext } from "../context/DataProvider";
 import { ThemeContext } from "../context/ThemeProvider";
+import { DataDijkstra } from "../context/DijkstraProvider";
 import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 import useHospitalLocation from "../hooks/useHospitalLocation";
@@ -26,6 +27,7 @@ const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
     useContext(DataContext);
   const { theme } = useContext(ThemeContext);
+  const { setInfoDikstra } = useContext(DataDijkstra);
 
   const firtsNodeRef = useRef();
 
@@ -55,12 +57,19 @@ const Graph = () => {
             .select(`#node-${firtsNodeRef.current.id}`)
             .style("fill", "#2525ff");
         } else {
-          const { path, distance } = useDijkstra(
+          const { path, distances, previous } = useDijkstra(
             state.nodes,
             state.links,
             firtsNodeRef.current,
             d
           );
+          setInfoDikstra({
+            start: firtsNodeRef.current,
+            end: d,
+            path,
+            distances,
+            previous,
+          });
           const p_l = pathLinks(path, state.links);
           path.forEach((p) => {
             svg.select(`#node-${p}`).style("fill", "#2525ff");
@@ -120,14 +129,17 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(150)
-          
+          .distance(200)
       )
-      /* .force("charge", d3.forceManyBody().strength(-200))
-      .force("collision", d3.forceCollide().radius(40))
-      .force("center", d3.forceCenter(ref.current.clientWidth / 2, ref.current.clientHeight / 2))
-      .force("radial", d3.forceRadial(200, ref.current.clientWidth / 2, ref.current.clientHeight / 2)); */
-      
+      .force("charge", d3.forceManyBody().strength(-10))
+      .force("collision", d3.forceCollide().radius(35))
+      .force(
+        "center",
+        d3.forceCenter(
+          ref.current.clientWidth / 2,
+          ref.current.clientHeight / 2
+        )
+      );
 
     // Unir y actualizar enlaces
     const link = svg
@@ -152,8 +164,8 @@ const Graph = () => {
     linkText
       .append("rect")
       .attr("fill", theme == "dark" ? "black" : "grey")
-      .attr("rx", 10)
-      .attr("width", 20)
+      .attr("rx", 5)
+      .attr("width", 25)
       .attr("height", 25)
       .attr("class", "backText");
 
@@ -177,6 +189,8 @@ const Graph = () => {
       .attr("id", (d) => `node-${d.id}`)
       .attr("r", 15)
       .attr("fill", theme == "dark" ? "white" : "black")
+      .attr("cx", (d) => ref.current.clientWidth / 2)
+      .attr("cy", (d) => ref.current.clientHeight / 2)
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
@@ -199,6 +213,19 @@ const Graph = () => {
       .style("user-select", "none")
       .text((d) => d.id)
       .on("click", (e, d) => handlerNode(e, d, svg));
+
+    // Redimensionar SVG y ajustar las posiciones
+    const handleResize = () => {
+      const newWidth = svg.node().getBoundingClientRect().width;
+      const newHeight = svg.node().getBoundingClientRect().height;
+
+      // Recalcular el centro de la simulación
+      simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
+      simulation.alpha(1).restart();
+    };
+
+    console.log({weight: ref.current.clientWidth, height: ref.current.clientHeight});
+    
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
@@ -223,7 +250,12 @@ const Graph = () => {
       nodeText.attr("x", (d) => d.x).attr("y", (d) => d.y + 30);
     });
 
+    setInfoDikstra({});
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       // Detener simulación y limpiar SVG al desmontar el componente
       simulation.stop();
       svg.selectAll("*").remove();
@@ -234,11 +266,3 @@ const Graph = () => {
 };
 
 export default Graph;
-
-// Aplicar Dijkstra y resaltar el camino más corto
-/* const { distances, previous } = dijkstra(nodes, links, 1);
-let targetNode = 2; // Nodo de destino
-while (previous[targetNode]) {
-  svg.select(`#node-${targetNode}`).attr("fill", "red");
-  targetNode = previous[targetNode];
-} */

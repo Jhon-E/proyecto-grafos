@@ -25,7 +25,6 @@ const links = [
 
 export const graph_1 = { nodes, links };
 
-
 const nodes2 = [
   { id: "0", name: "Nodo 1", x: width, y: 300 },
   { id: "1", name: "Nodo 2", x: width, y: 400 },

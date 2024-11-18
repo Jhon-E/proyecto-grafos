@@ -73,7 +73,7 @@ const useDijkstra = (nodes, links, startNode, endNode) => {
   // Verifica si hay camino o si el nodo final es alcanzable
   //if (path[0] !== startNode.id) return { path: [], distances: Infinity }; // Retorna un array vacío si no hay ruta válida
 
-  return { path, distances };
+  return { path, distances, previous };
 };
 
 export default useDijkstra;

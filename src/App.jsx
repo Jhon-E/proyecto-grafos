@@ -6,11 +6,14 @@ import RenderAlert from "./components/Renders/RenderAlert";
 import { AlertContext } from "./context/AlertProvider";
 import DisplayInfo from "./components/DisplayInfo";
 import { ThemeContext } from "./context/ThemeProvider";
+import RenderInfoDijkstra from "./components/Renders/RenderInfo";
+import { DataDijkstra } from "./context/DijkstraProvider";
 
 function App() {
   const { showAlert } = useContext(AlertContext);
   const { action, setAction } = useContext(DataContext);
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext);
+  const { infoDikstra } = useContext(DataDijkstra);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -30,21 +33,23 @@ function App() {
   return (
     <>
       <main className="w-dvw h-dvh bg-base-100" data-theme={theme}>
-        <RenderNav />
-        <section id="creador" className="h-full w-full ">
-          <RenderGraph />
+        <section className="flex w-full h-full flex-col lg:flex-row">
+          <aside className="relative grid flex-grow place-items-center">
+            <RenderNav />
+            <RenderGraph />
+          </aside>
+          {/* esto ocultarlo hasta que se use dijkstra o floyd-warshall */}
+          {!!infoDikstra.path ? (
+            <>
+              <aside className=" bg-transparent w-16 grid flex-grow place-items-center">
+                <RenderInfoDijkstra info={infoDikstra} />
+              </aside>
+            </>
+          ) : null}
         </section>
         {showAlert ? <RenderAlert action={action} /> : null}
         <DisplayInfo />
       </main>
-      {/*  <footer className="footer footer-center bg-base-300 text-base-content p-4 relative bottom-0">
-        <aside>
-          <p>
-            Copyright © {new Date().getFullYear()} - Todos los derechos
-            reservados para Jhone, Cacua y Daniel.
-          </p>
-        </aside>
-      </footer> */}
     </>
   );
 }

@@ -10,6 +10,12 @@ const ModalPeso = memo(() => {
     <>
       {show ? (
         <aside className="absolute text-center flex flex-col top-1/2 left-1/2 bg-base-300 p-4 gap-4 rounded-lg -translate-x-1/2 -translate-y-1/2">
+          <button
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={() => setShow(false)}
+          >
+            ✕
+          </button>
           <label htmlFor="peso">Guardar peso</label>
           <input
             value={peso}
