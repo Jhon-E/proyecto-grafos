@@ -6,7 +6,6 @@ export const calculateAllDistances = (nodes, links) => {
   nodes.forEach((node) => {
     const { distances } = useDijkstra(nodes, links, node);
     distancesForNode[node.id] = distances;
-    console.log(distances);
   });
 
 

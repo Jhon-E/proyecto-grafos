@@ -15,7 +15,7 @@ const DisplayInfo = () => {
   }, [info]);
 
   return (
-    <div className="text-xs bg-base-300 fixed bottom-0 left-0 rounded-se-lg w-[380px] flex justify-end pr-4 gap-2">
+    <div className="text-xs bg-base-300 fixed bottom-0 left-0 rounded-se-lg w-[430px] flex justify-end pr-4 gap-2">
       <span>{`(${info.x},${info.y})`}</span>
       <h5>Herramienta: {action.toLowerCase()}</h5>
       <aside>

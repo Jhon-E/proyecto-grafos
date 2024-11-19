@@ -18,6 +18,9 @@ const RenderAlert = ({ action }) => {
       case "DIJKSTRA":
         setMsg("Seleccione un nodo de inicio y otro de destino");
         break;
+      case "FLOYD_WARSHALL":
+        setMsg("Seleccione cualquier nodo");
+        break;
     }
   }, [action]);
 

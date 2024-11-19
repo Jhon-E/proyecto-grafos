@@ -23,7 +23,7 @@ const ModalPeso = memo(() => {
             name="peso"
             placeholder="Ingrese el peso del enlace"
             className="input input-bordered input-info w-full max-w-xs"
-            onChange={(e) => setPeso(e.target.value)}
+            onChange={(e) => setPeso(parseInt(e.target.value))}
           />
           <button
             className="text-center bg-primary text-base-100 cursor-pointer font-bold rounded-lg p-2"
