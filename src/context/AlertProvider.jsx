@@ -6,13 +6,13 @@ export const AlertProvider = ({ children }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   return (
-    <AlertContext.Provider
+    <AlertContext
       value={{
         showAlert,
         setShowAlert,
       }}
     >
       {children}
-    </AlertContext.Provider>
+    </AlertContext>
   );
 };

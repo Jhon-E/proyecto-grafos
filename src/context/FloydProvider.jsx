@@ -6,9 +6,9 @@ const FloydProvider = ({ children }) => {
   const [infoFloyd, setInfoFloyd] = useState({});
 
   return (
-    <FloydContext.Provider value={{ infoFloyd, setInfoFloyd }}>
+    <FloydContext value={{ infoFloyd, setInfoFloyd }}>
       {children}
-    </FloydContext.Provider>
+    </FloydContext>
   );
 };
 

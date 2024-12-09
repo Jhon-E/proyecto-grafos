@@ -6,9 +6,9 @@ const InfoProvider = ({ children }) => {
   const [info, setInfo] = useState({});
 
   return (
-    <InfoContext.Provider value={{ info, setInfo }}>
+    <InfoContext value={{ info, setInfo }}>
       {children}
-    </InfoContext.Provider>
+    </InfoContext>
   );
 };
 

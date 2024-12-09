@@ -2,12 +2,12 @@ const width = document.body.clientWidth / 2;
 const height = document.body.clientHeight / 2;
 
 const nodes = [
-  { id: "0", name: "Nodo 1", x: width, y: 300 },
-  { id: "1", name: "Nodo 2", x: width, y: 300 },
-  { id: "2", name: "Nodo 3", x: width, y: 300 },
-  { id: "3", name: "Nodo 4", x: width, y: 300 },
-  { id: "4", name: "Nodo 5", x: width, y: 300 },
-  { id: "5", name: "Nodo 6", x: width, y: 300 },
+  { id: "0", name: "Nodo 1" },
+  { id: "1", name: "Nodo 2" },
+  { id: "2", name: "Nodo 3" },
+  { id: "3", name: "Nodo 4" },
+  { id: "4", name: "Nodo 5" },
+  { id: "5", name: "Nodo 6" },
 ];
 
 const links = [
@@ -26,11 +26,11 @@ const links = [
 export const graph_1 = { nodes, links };
 
 const nodes2 = [
-  { id: "0", name: "Nodo 1", x: width, y: 300 },
-  { id: "1", name: "Nodo 2", x: width, y: 400 },
-  { id: "2", name: "Nodo 3", x: width, y: 500 },
-  { id: "3", name: "Nodo 4", x: width, y: 600 },
-  { id: "4", name: "Nodo 5", x: width, y: 700 },
+  { id: "0", name: "Nodo 1" },
+  { id: "1", name: "Nodo 2" },
+  { id: "2", name: "Nodo 3" },
+  { id: "3", name: "Nodo 4" },
+  { id: "4", name: "Nodo 5" },
 ];
 
 const links2 = [
@@ -46,11 +46,11 @@ const links2 = [
 export const graph_2 = { nodes2, links2 };
 
 const nodes3 = [
-  { id: "0", name: "Nodo 1", x: width, y: 100 },
-  { id: "1", name: "Nodo 2", x: width, y: 200 },
-  { id: "2", name: "Nodo 3", x: width, y: 300 },
-  { id: "3", name: "Nodo 4", x: width, y: 400 },
-  { id: "4", name: "Nodo 5", x: width, y: 500 },
+  { id: "0", name: "Nodo 1" },
+  { id: "1", name: "Nodo 2" },
+  { id: "2", name: "Nodo 3" },
+  { id: "3", name: "Nodo 4" },
+  { id: "4", name: "Nodo 5" },
 ];
 
 const links3 = [
@@ -66,14 +66,14 @@ const links3 = [
 export const graph_3 = { nodes3, links3 };
 
 const nodes4 = [
-  { id: "0", name: "Nodo 1", x: width, y: 100 },
-  { id: "1", name: "Nodo 2", x: width + 100, y: 200 },
-  { id: "2", name: "Nodo 3", x: width - 100, y: 300 },
-  { id: "3", name: "Nodo 4", x: width + 200, y: 400 },
-  { id: "4", name: "Nodo 5", x: width - 200, y: 500 },
-  { id: "5", name: "Nodo 6", x: width + 300, y: 600 },
-  { id: "6", name: "Nodo 7", x: width - 300, y: 700 },
-  { id: "7", name: "Nodo 8", x: width, y: 800 },
+  { id: "0", name: "Nodo 1" },
+  { id: "1", name: "Nodo 2" },
+  { id: "2", name: "Nodo 3" },
+  { id: "3", name: "Nodo 4" },
+  { id: "4", name: "Nodo 5" },
+  { id: "5", name: "Nodo 6" },
+  { id: "6", name: "Nodo 7" },
+  { id: "7", name: "Nodo 8" },
 ];
 
 const links4 = [

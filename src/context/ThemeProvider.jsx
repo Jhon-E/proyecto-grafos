@@ -6,9 +6,9 @@ const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('dark');
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext value={{ theme, setTheme }}>
       {children}
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 };
 

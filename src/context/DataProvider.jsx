@@ -15,7 +15,7 @@ export const DataProvider = ({ children }) => {
   const [showModalPeso, setShowModalPeso] = useState(false);
 
   return (
-    <DataContext.Provider
+    <DataContext
       value={{
         state,
         peso,
@@ -28,6 +28,6 @@ export const DataProvider = ({ children }) => {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </DataContext>
   );
 };

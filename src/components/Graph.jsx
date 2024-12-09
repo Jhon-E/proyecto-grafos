@@ -1,4 +1,4 @@
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect, use } from "react";
 import { ThemeContext } from "../context/ThemeProvider";
 import { InfoContext } from "../context/InfoProvider";
 import * as d3 from "d3";
@@ -25,9 +25,9 @@ const pathLinks = (path, links) => {
 
 const Graph = () => {
   const { action, setShowModalPeso, peso, state, dispatch } =
-    useContext(DataContext);
-  const { theme } = useContext(ThemeContext);
-  const { info, setInfo } = useContext(InfoContext);
+    use(DataContext);
+  const { theme } = use(ThemeContext);
+  const { info, setInfo } = use(InfoContext);
 
   const firtsNodeRef = useRef();
 
@@ -86,7 +86,6 @@ const Graph = () => {
           state.nodes,
           state.links
         );
-        console.log({ centerNode, excentricity, distances });
 
         setInfo({ centerNode, excentricity, distances });
 
@@ -131,10 +130,10 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(125)
+          .distance(100)
       )
       .force("charge", d3.forceManyBody().strength(-10))
-      .force("collision", d3.forceCollide().radius(35))
+      .force("collision", d3.forceCollide().radius(100))
       .force(
         "center",
         d3.forceCenter(
