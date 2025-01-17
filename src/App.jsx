@@ -42,7 +42,7 @@ function App() {
           <AnimatePresence mode="wait">
             {!!info.path ? (
               <motion.aside
-                className="bg-transparent w-16 grid flex-grow place-items-center"
+                className="bg-transparent"
                 initial={{ x: 1600 }} // Animación al montar
                 animate={{ x: 0 }} // Estado final
                 exit={{ opacity: 0, x: 800 }} // Animación al desmontar
@@ -55,7 +55,7 @@ function App() {
           <AnimatePresence mode="wait">
             {!!info.centerNode ? (
               <motion.aside
-                className="bg-transparent w-16 grid flex-grow place-items-center"
+                className="bg-transparent"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}

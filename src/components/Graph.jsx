@@ -5,103 +5,16 @@ import * as d3 from "d3";
 import useDijkstra from "../hooks/useDijkstra";
 import useHospitalLocation from "../hooks/useHospitalLocation";
 import { DataContext } from "../context/DataProvider";
-
-const pathLinks = (path, links) => {
-  const pathLinks = [];
-  for (let i = 0; i < path.length - 1; i++) {
-    const source = path[i];
-    const target = path[i + 1];
-    const link = links.find(
-      (l) =>
-        (l.source.id === source && l.target.id === target) ||
-        (l.source.id === target && l.target.id === source)
-    );
-    if (link) {
-      pathLinks.push(link);
-    }
-  }
-  return pathLinks;
-};
+import { handlerNode } from "../utils/scripts";
 
 const Graph = () => {
-  const { action, setShowModalPeso, peso, state, dispatch } =
-    use(DataContext);
+  const { action, setShowModalPeso, peso, state, dispatch } = use(DataContext);
   const { theme } = use(ThemeContext);
-  const { info, setInfo } = use(InfoContext);
+  const { setInfo } = use(InfoContext);
 
   const firtsNodeRef = useRef();
 
   const ref = useRef(null);
-
-  const handlerNode = (e, d, svg) => {
-    svg.selectAll(".node").style("fill", theme == "dark" ? "white" : "black");
-    svg.selectAll(".link").attr("stroke", theme == "dark" ? "black" : "grey");
-    switch (action) {
-      case "DELETE":
-        dispatch({ type: action, d });
-        break;
-      case "LINK":
-        if (!firtsNodeRef.current) {
-          firtsNodeRef.current = d;
-          setShowModalPeso(true);
-        } else {
-          linker(firtsNodeRef.current, d, peso);
-          firtsNodeRef.current = null;
-          setShowModalPeso(false);
-        }
-        break;
-      case "DIJKSTRA":
-        if (!firtsNodeRef.current) {
-          firtsNodeRef.current = d;
-          svg
-            .select(`#node-${firtsNodeRef.current.id}`)
-            .style("fill", "#2525ff");
-        } else {
-          const { path, distances, previous } = useDijkstra(
-            state.nodes,
-            state.links,
-            firtsNodeRef.current,
-            d
-          );
-          setInfo({
-            start: firtsNodeRef.current,
-            end: d,
-            path,
-            distances,
-            previous,
-          });
-          const p_l = pathLinks(path, state.links);
-          path.forEach((p) => {
-            svg.select(`#node-${p}`).style("fill", "#2525ff");
-          });
-
-          p_l.forEach((l) =>
-            svg.select(`#link-${l.index}`).attr("stroke", "#2525ff")
-          );
-          firtsNodeRef.current = null;
-        }
-        break;
-      case "FLOYD_WARSHALL":
-        const { centerNode, excentricity, distances } = useHospitalLocation(
-          state.nodes,
-          state.links
-        );
-
-        setInfo({ centerNode, excentricity, distances });
-
-        svg.select(`#node-${centerNode}`).style("fill", "#2525ff");
-        break;
-    }
-  };
-
-  const linker = (first, second, weight) => {
-    const newLink = {
-      source: first.id, // ID del nodo de origen
-      target: second.id, // ID del nodo de destino
-      weight,
-    };
-    dispatch({ type: action, newLink });
-  };
 
   useEffect(() => {
     const svg = d3
@@ -195,8 +108,23 @@ const Graph = () => {
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
-      .on("click", (e, d) => handlerNode(e, d, svg));
-
+      .on("click", (e, d) =>
+        handlerNode(
+          e,
+          d,
+          svg,
+          dispatch,
+          firtsNodeRef,
+          setShowModalPeso,
+          setInfo,
+          action,
+          useDijkstra,
+          useHospitalLocation,
+          theme,
+          state,
+          peso
+        )
+      );
 
     // Unir y actualizar textos de nodos
     const nodeText = svg
@@ -214,7 +142,23 @@ const Graph = () => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
-      .on("click", (e, d) => handlerNode(e, d, svg));
+      .on("click", (e, d) =>
+        handlerNode(
+          e,
+          d,
+          svg,
+          dispatch,
+          firtsNodeRef,
+          setShowModalPeso,
+          setInfo,
+          action,
+          useDijkstra,
+          useHospitalLocation,
+          theme,
+          state,
+          peso
+        )
+      );
 
     // Actualizar posiciones en cada tick
     simulation.on("tick", () => {
@@ -239,11 +183,25 @@ const Graph = () => {
       nodeText.attr("x", (d) => d.x).attr("y", (d) => d.y + 30);
     });
 
+    const handleResize = () => {
+      simulation.force(
+        "center",
+        d3.forceCenter(
+          ref.current.clientWidth / 2,
+          ref.current.clientHeight / 2
+        )
+      );
+      simulation.alpha(1).restart();
+    };
+
+    window.addEventListener("resize", handleResize);
+
     setInfo({});
 
     return () => {
       simulation.stop();
       svg.selectAll("*").remove();
+      window.removeEventListener("resize", handleResize);
     };
   }, [state.links, state.nodes, action, peso, theme]);
 

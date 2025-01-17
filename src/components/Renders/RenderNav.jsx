@@ -32,7 +32,7 @@ const RenderNav = () => {
   return (
     <nav
       ref={navRef}
-      className="absolute h-auto left-2/4 -translate-x-2/4 top-3 w-full flex items-center justify-center"
+      className="absolute h-auto left-2/4 -translate-x-2/4 top-3 w-full flex items-center justify-center "
     >
       <div className="absolute left-6 top-3">
         <label
@@ -78,7 +78,7 @@ const RenderNav = () => {
         <li>
           <details>
             <summary>Nodos</summary>
-            <ul>
+            <ul className="bg-base-200 bg-opacity-50 backdrop-filter backdrop-blur-lg">
               <li>
                 <button
                   onClick={() => {
@@ -116,7 +116,7 @@ const RenderNav = () => {
         <li>
           <details>
             <summary>Algoritmos</summary>
-            <ul>
+            <ul className="bg-base-200 bg-opacity-50 backdrop-filter backdrop-blur-lg">
               <li>
                 <button
                   onClick={() => {
@@ -144,7 +144,7 @@ const RenderNav = () => {
         <li>
           <details>
             <summary>Grafos de ejemplo</summary>
-            <ul>
+            <ul className="bg-base-200 bg-opacity-50 backdrop-filter backdrop-blur-lg">
               <li>
                 <button
                   onClick={() => {

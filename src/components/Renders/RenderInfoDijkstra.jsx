@@ -1,8 +1,8 @@
 const RenderInfoDijkstra = ({ info }) => {
   return (
-    <div className="w-full h-full p-2 bg-transparent overflow-y-auto">
-      <div className="flex p-4 bg-base-300 flex-col w-full items-center rounded-lg overflow-y-auto">
-      <section className="h-full w-full flex bg-base-200 items-center p-2 rounded-lg justify-between">
+    <div className="absolute top-0 right-6 flex justify-center items-center w-1/3 h-full p-2 bg-transparent overflow-y-auto">
+      <div className="flex p-4 bg-base-content bg-opacity-15 backdrop-filter backdrop-blur-lg flex-col w-full items-center rounded-lg overflow-y-auto">
+      <section className="h-full w-full flex items-center p-2 justify-between">
           <h1 className=" text-lg font-bold">Algoritmo Dijkstra </h1>
           <h3>
             Pulse <kbd className="kbd">esc</kbd> para quitar
@@ -43,11 +43,11 @@ const RenderInfoDijkstra = ({ info }) => {
         </section>
         <br />
         <section className="overflow-x-auto flex flex-col gap-4 w-full justify-self-center">
-          <h2 className=" text-lg font-bold">Recorrido y peso acumulado</h2>
-          <table className="table text-center border-collapse border border-base-300 w-auto">
+          <h2 className="text-lg font-bold">Recorrido y peso acumulado</h2>
+          <table className="text-center rounded-lg">
             {/* head */}
             <thead>
-              <tr className="bg-primary text-base-100 uppercase text-sm">
+              <tr className="bg-base-content text-base-100 uppercase text-sm">
                 <th className="p-3 border border-base-300">Nodo</th>
                 <th className="p-3 border border-base-300">Peso acumulado</th>
               </tr>
@@ -59,9 +59,9 @@ const RenderInfoDijkstra = ({ info }) => {
                     key={"row-"+i}
                     className={`${
                       i % 2 === 0 ? "bg-base-200" : "bg-base-100"
-                    } hover:bg-primary hover:text-base-100 transition duration-200`}
+                    } hover:bg-base-content hover:text-base-100 transition duration-200`}
                   >
-                    <th className="p-3 border border-base-300 bg-primary text-base-100 font-bold">
+                    <th className="p-3 border border-base-300 bg-base-content text-base-100 font-bold">
                       Nodo {p}
                     </th>
                     <td key={"col-" + i} className="p-3 border border-base-300">
