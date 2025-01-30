@@ -1,12 +1,14 @@
 import { useContext, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { DataContext } from "../../context/DataProvider";
+import RenderAlert from "./RenderAlert";
 import { AlertContext } from "../../context/AlertProvider";
 import { ThemeContext } from "../../context/ThemeProvider";
 import { graph_1, graph_2, graph_3, graph_4 } from "../../utils/Grafos";
 
 const RenderNav = () => {
-  const { setAction, dispatch } = useContext(DataContext);
-  const { setShowAlert } = useContext(AlertContext);
+  const { setAction, dispatch, action } = useContext(DataContext);
+  const { setShowAlert, showAlert } = useContext(AlertContext);
   const { setTheme } = useContext(ThemeContext);
 
   const navRef = useRef();
@@ -189,6 +191,7 @@ const RenderNav = () => {
           </details>
         </li>
       </ul>
+      {showAlert && createPortal(<RenderAlert action={action} />, document.body)}
     </nav>
   );
 };

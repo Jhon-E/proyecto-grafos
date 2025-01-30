@@ -2,19 +2,20 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { AlertContext } from "../context/AlertProvider";
 
-
 const Alert = ({ message }) => {
-
   const { setShowAlert, showAlert } = useContext(AlertContext);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => setShowAlert(false), 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  return showAlert ? (
-    <div role="alert" className="alert alert-info fixed bottom-5 right-5 w-max p-2">
+  return (
+    <div
+      role="alert"
+      className="alert z-10 alert-info absolute bottom-5 right-5 w-max p-2"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -31,7 +32,7 @@ const Alert = ({ message }) => {
       <span>{message}</span>
       <div
         onClick={() => setShowAlert(false)}
-        className=" cursor-pointer font-bold bg-blue-500 rounded-lg p-1"
+        className=" cursor-pointer font-bold rounded-lg p-1"
       >
         <svg
           viewBox="0 0 100 100"
@@ -49,7 +50,7 @@ const Alert = ({ message }) => {
         </svg>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default Alert;

@@ -32,7 +32,10 @@ function App() {
 
   return (
     <>
-      <main className="w-dvw h-dvh bg-base-100 overflow-hidden" data-theme={theme}>
+      <main
+        className="w-dvw h-dvh bg-base-100 overflow-hidden"
+        data-theme={theme}
+      >
         <section className="flex w-full h-full flex-col lg:flex-row">
           <aside className=" relative flex-grow place-items-center">
             <RenderNav />
@@ -43,10 +46,10 @@ function App() {
             {!!info.path ? (
               <motion.aside
                 className="bg-transparent"
-                initial={{ x: 1600 }} // Animación al montar
-                animate={{ x: 0 }} // Estado final
-                exit={{ opacity: 0, x: 800 }} // Animación al desmontar
-                transition={{ duration: 0.5 }} // Duración de la transición
+                initial={{ x: 1600, zIndex: 400 }}
+                animate={{ x: 0 }}
+                exit={{ opacity: 0, x: 800 }}
+                transition={{ duration: 0.5 }}
               >
                 <RenderInfoDijkstra info={info} />
               </motion.aside>
@@ -56,9 +59,9 @@ function App() {
             {!!info.centerNode ? (
               <motion.aside
                 className="bg-transparent"
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
+                initial={{ x: 1600, zIndex: 400 }}
+                animate={{ x: 0 }}
+                exit={{ opacity: 0, x: 800 }}
                 transition={{ duration: 0.5 }}
               >
                 <RenderInfoFloyd info={info} />
@@ -66,7 +69,6 @@ function App() {
             ) : null}
           </AnimatePresence>
         </section>
-        {showAlert ? <RenderAlert action={action} /> : null}
         <DisplayInfo />
       </main>
     </>

@@ -1,19 +1,19 @@
 const RenderInfoDijkstra = ({ info }) => {
   return (
-    <div className="absolute top-0 right-6 flex justify-center items-center w-1/3 h-full p-2 bg-transparent overflow-y-auto">
-      <div className="flex p-4 bg-base-content bg-opacity-15 backdrop-filter backdrop-blur-lg flex-col w-full items-center rounded-lg overflow-y-auto">
-      <section className="h-full w-full flex items-center p-2 justify-between">
-          <h1 className=" text-lg font-bold">Algoritmo Dijkstra </h1>
+    <div className="absolute top-0 right-0 flex justify-center items-center min-w-96 h-dvh p-2 bg-transparent overflow-y-auto">
+      <div className="flex px-4 bg-base-content bg-opacity-15 backdrop-filter backdrop-blur-lg flex-col w-full h-full items-center rounded-lg overflow-y-auto justify-between py-2">
+        <section className="w-full flex items-center justify-between">
+          <h1 className="font-bold">Dijkstra </h1>
           <h3>
             Pulse <kbd className="kbd">esc</kbd> para quitar
           </h3>
         </section>
         <br />
-        <section className="p-4 w-full flex flex-col items-center bg-base-200 rounded-lg">
-          <h1 className=" text-xl font-bold">
+        <section className="flex flex-col rounded-lg w-full">
+          <h1 className=" self-start">
             Ruta más corta desde Nodo {info.start.id} a Nodo {info.end.id}
           </h1>
-          <ul className="timeline">
+          <ul className="timeline self-center">
             {info.path.map((p, i) => (
               <>
                 <li key={i}>
@@ -41,30 +41,30 @@ const RenderInfoDijkstra = ({ info }) => {
             ))}
           </ul>
         </section>
-        <br />
         <section className="overflow-x-auto flex flex-col gap-4 w-full justify-self-center">
-          <h2 className="text-lg font-bold">Recorrido y peso acumulado</h2>
-          <table className="text-center rounded-lg">
+          <h2>Recorrido y peso acumulado</h2>
+          <table className="text-center rounded-lg w-full self-center bg-base-200">
             {/* head */}
             <thead>
-              <tr className="bg-base-content text-base-100 uppercase text-sm">
-                <th className="p-3 border border-base-300">Nodo</th>
-                <th className="p-3 border border-base-300">Peso acumulado</th>
+              <tr className="bg-base-content text-base-100 text-sm">
+                <th className="p-1 border border-base-300">Nodo recorrido</th>
+                <th className="p-1 border border-base-300">Peso acumulado</th>
               </tr>
             </thead>
             <tbody>
               {info.path.map((p, i) => {
                 return (
                   <tr
-                    key={"row-"+i}
-                    className={`${
-                      i % 2 === 0 ? "bg-base-200" : "bg-base-100"
-                    } hover:bg-base-content hover:text-base-100 transition duration-200`}
+                    key={"row-" + i}
+                    className="hover:bg-base-content hover:text-base-100 transition duration-200"
                   >
-                    <th className="p-3 border border-base-300 bg-base-content text-base-100 font-bold">
+                    <th className="p-1 border border-base-300 bg-base-content text-base-100 font-bold text-sm">
                       Nodo {p}
                     </th>
-                    <td key={"col-" + i} className="p-3 border border-base-300">
+                    <td
+                      key={"col-" + i}
+                      className="p-1 border border-base-300 text-sm"
+                    >
                       {info.distances[p]}
                     </td>
                   </tr>

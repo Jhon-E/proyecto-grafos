@@ -4,24 +4,27 @@ import { ThemeContext } from "../../context/ThemeProvider";
 const RenderInfoFloyd = ({ info }) => {
   const { theme } = useContext(ThemeContext);
   return (
-    <div className="absolute flex justify-center items-center top-0 rounded-lg right-1 w-1/3 h-full bg-transparent overflow-y-auto">
-      <div className="flex flex-col p-4 bg-base-content bg-opacity-15 backdrop-filter backdrop-blur-lg w-full items-center rounded-lg overflow-y-auto">
-        <section className="h-full w-full flex items-center p-2 rounded-lg justify-between">
-          <h1 className=" text-lg font-bold">Problema del hospital </h1>
+    <div className="absolute top-0 right-0 flex justify-center items-center min-w-96 h-dvh p-2 bg-transparent overflow-y-auto">
+      <div className="flex px-4 bg-base-content bg-opacity-15 backdrop-filter backdrop-blur-lg flex-col w-full h-full items-center rounded-lg overflow-y-auto justify-between py-2">
+        <section className="w-full flex items-center justify-between">
+          <h1>Nodo central</h1>
           <h3>
             Pulse <kbd className="kbd">esc</kbd> para quitar
           </h3>
         </section>
-        <section className="p-4 w-full flex flex-col items-center justify-center">
-          <h2 className=" text-lg font-bold">Matriz de distancias</h2>
+        <section className="overflow-x-auto flex flex-col w-full justify-self-center">
+          <h2>Matriz de distancias</h2>
           <br />
-          <table className="table text-center border-collapse border border-base-300">
+          <table className="text-center rounded-lg w-full self-center bg-base-200">
             {/* head */}
             <thead>
-              <tr className="bg-base-content text-base-100 uppercase text-sm">
-                <th className="p-3 border border-base-300">Nodo</th>
+              <tr className="bg-base-content text-base-100 text-sm">
+                <th className="p-1 border border-base-300">Nodo</th>
                 {Object.keys(info.distances).map((_, i) => (
-                  <th key={i} className="p-3 border border-base-300">
+                  <th
+                    key={i}
+                    className="border border-base-300 bg-base-content text-base-100 min-w-4 font-bold text-sm"
+                  >
                     {i}
                   </th>
                 ))}
@@ -31,15 +34,13 @@ const RenderInfoFloyd = ({ info }) => {
               {Object.entries(info.distances).map(([row, values], rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={`${
-                    rowIndex % 2 === 0 ? "bg-base-200" : "bg-base-100"
-                  } hover:bg-base-content hover:text-base-100 transition duration-200`}
+                  className="hover:bg-base-content hover:text-base-100 transition duration-200"
                 >
-                  <th className="p-3 border border-base-300 bg-base-content text-base-100 font-bold">
+                  <th className="p-1 border border-base-300 bg-base-content text-base-100 font-bold text-sm">
                     {row}
                   </th>
                   {Object.values(values).map((d, colIndex) => (
-                    <td key={colIndex} className="p-3 border border-base-300">
+                    <td key={colIndex} className="p-1 border border-base-300">
                       {d}
                     </td>
                   ))}
@@ -48,9 +49,9 @@ const RenderInfoFloyd = ({ info }) => {
             </tbody>
           </table>
         </section>
-        <section className=" w-full flex">
-          <div className="flex flex-col w-full items-center gap-5">
-            <h2 className=" text-lg font-bold">Nodo central</h2>
+        <section className="w-full flex flex-col gap-4">
+          <div className="flex justify-between w-full items-center gap-5">
+            <h2>Nodo central</h2>
             <div
               className={`${
                 theme == "dark" ? "bg-white  text-black" : "bg-black text-white"
@@ -59,8 +60,8 @@ const RenderInfoFloyd = ({ info }) => {
               {info.centerNode}
             </div>
           </div>
-          <div className="flex flex-col w-full items-center gap-5">
-            <h2 className=" text-lg font-bold">
+          <div className="flex justify-between w-full items-center">
+            <h2>
               Excentricidad del nodo {info.centerNode}
             </h2>
             <div className=" bg-primary text-base-100 rounded-xl h-10 w-10 font-bold flex justify-center items-center">

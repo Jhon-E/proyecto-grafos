@@ -43,17 +43,10 @@ const Graph = () => {
         d3
           .forceLink(state.links)
           .id((d) => d.id)
-          .distance(100)
+          .distance(150)
       )
-      .force("charge", d3.forceManyBody().strength(-10))
-      .force("collision", d3.forceCollide().radius(100))
-      .force(
-        "center",
-        d3.forceCenter(
-          ref.current.clientWidth / 2,
-          ref.current.clientHeight / 2
-        )
-      );
+      .force("collision", d3.forceCollide().radius(15))
+      .force("linkCharge", d3.forceManyBody().strength(-150).distanceMax(150));
 
     // Unir y actualizar enlaces
     const link = svg
@@ -108,6 +101,24 @@ const Graph = () => {
       .attr("cursor", "pointer")
       .attr("cursor", "grab")
       .style("user-select", "none")
+      .call(
+        d3
+          .drag()
+          .on("start", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+          })
+          .on("drag", (event, d) => {
+            d.fx = event.x;
+            d.fy = event.y;
+          })
+          .on("end", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          })
+      )
       .on("click", (e, d) =>
         handlerNode(
           e,
@@ -142,6 +153,24 @@ const Graph = () => {
       .attr("dy", "-25px")
       .style("user-select", "none")
       .text((d) => d.id)
+      .call(
+        d3
+          .drag()
+          .on("start", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+          })
+          .on("drag", (event, d) => {
+            d.fx = event.x;
+            d.fy = event.y;
+          })
+          .on("end", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          })
+      )
       .on("click", (e, d) =>
         handlerNode(
           e,
@@ -183,25 +212,11 @@ const Graph = () => {
       nodeText.attr("x", (d) => d.x).attr("y", (d) => d.y + 30);
     });
 
-    const handleResize = () => {
-      simulation.force(
-        "center",
-        d3.forceCenter(
-          ref.current.clientWidth / 2,
-          ref.current.clientHeight / 2
-        )
-      );
-      simulation.alpha(1).restart();
-    };
-
-    window.addEventListener("resize", handleResize);
-
     setInfo({});
 
     return () => {
       simulation.stop();
       svg.selectAll("*").remove();
-      window.removeEventListener("resize", handleResize);
     };
   }, [state.links, state.nodes, action, peso, theme]);
 
